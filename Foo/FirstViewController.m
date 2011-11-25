@@ -34,10 +34,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"First", @"First");
+        self.title = NSLocalizedString(@"Latest", @"Latest");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
-        
-        self.posts = [Posts allObjects];
+
+        [self populatePosts];
     }
     return self;
 }
@@ -76,26 +76,33 @@
     
     [[RKObjectManager sharedManager].mappingProvider setMapping:postMapping forKeyPath:@"posts"];
     
-    //tell RKObjectManager to load object at resource path...
-    //[self loadPosts];
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/channel/latest" delegate:self];
 }
 
-
-- (void)loadPosts {
-    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/channel/latest" delegate:self];
+- (void)populatePosts {
+    
+    NSArray* sortedObjects = [Posts allObjects];
+    
+    NSSortDescriptor *dateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
+    NSArray *newSortDescriptor = [NSArray arrayWithObject:dateSortDescriptor];
+    
+    self.posts = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
 }
 
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
+
+    for (id obj in objects) {
+        NSLog(@"%@", [obj valueForKey:@"postTitle"]);
+    }
     
-    self.posts = objects;
+    [self populatePosts];
     
     [self.tableView reloadData];
-    
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
-    
+    NSLog(@"error...");
 }
 
 - (void)viewDidUnload
@@ -135,19 +142,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 64.0;
+    return 48.0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [self.posts count];
 }
@@ -162,7 +167,8 @@
     }
     
     cell.textLabel.text = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postTitle"];
-    cell.detailTextLabel.text = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postDescription"];
+    NSDate *newsDate = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postDate"];
+    cell.detailTextLabel.text = [newsDate description];
     // Configure the cell...
     
     return cell;

@@ -15,10 +15,8 @@
 
 }
 
-@property (nonatomic, copy) NSArray *posts;
+@property (nonatomic, strong) NSArray *posts;
 
--(void)loadPosts;
-
-
+-(void)populatePosts;
 
 @end
