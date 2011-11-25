@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RestKit/RestKit.h>
+#import <RestKit/CoreData/CoreData.h>
 
-@interface FirstViewController : UIViewController
+@interface FirstViewController : UITableViewController <RKObjectLoaderDelegate>
+{
+
+}
+
+@property (nonatomic, copy) NSArray *posts;
+
+-(void)loadPosts;
+
+
 
 @end

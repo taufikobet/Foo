@@ -12,6 +12,8 @@
 
 #import "SecondViewController.h"
 
+#import <RestKit/RestKit.h>
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -19,6 +21,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // First created instance will be assigned as sharedManager 
+    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://ios.thejakartapost.com"];
+    
+    RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"Foo.sqlite"];
+    objectManager.objectStore = objectStore;
+
+    //RKClient* client = [RKClient clientWithBaseURL:@"http://ios.thejakartapost.com"];
+    //[client get:@"/channel/latest" delegate:self];
+
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     UIViewController *viewController1 = [[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil];
@@ -82,5 +94,23 @@
 {
 }
 */
+
+- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response
+{
+/*
+    NSData *requestBody = [response body];
+    NSError *newError;
+    NSJSONSerialization *JSONData = [NSJSONSerialization JSONObjectWithData:requestBody options:NSJSONReadingAllowFragments error:&newError];
+    NSLog(@"The posts data is: %@", [JSONData valueForKey:@"posts"]);
+//    NSLog(@"The posts data is: %@", [[JSONData valueForKey:@"posts"] valueForKey:@"description"]);
+    
+    if ([response isJSON]) {
+        NSLog(@"Yes, it is.");
+        NSLog(@"The MIME type: %@", [response MIMEType] );
+        NSLog(@"The URL address is: %@", [response URL] );
+        NSLog (@"All header fields is: %@", [[response allHeaderFields] valueForKey:@"Date"]);
+    }
+ */
+}
 
 @end

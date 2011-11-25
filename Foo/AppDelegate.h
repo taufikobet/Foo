@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+#import <RestKit/RestKit.h>
+
+#import <RestKit/CoreData/CoreData.h>
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, RKRequestDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -8,7 +8,27 @@
 
 #import "FirstViewController.h"
 
+#import <RestKit/RestKit.h>
+
+#import "Posts.h"
+
+#import "Author.h"
+#import "Article.h"
+
 @implementation FirstViewController
+
+@synthesize posts;
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    
+    if (self) {
+
+    }
+    
+    return self;
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -16,6 +36,8 @@
     if (self) {
         self.title = NSLocalizedString(@"First", @"First");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        
+        self.posts = [Posts allObjects];
     }
     return self;
 }
@@ -32,6 +54,48 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    //Mapping remote resources data (ex. JSON, XML) to plain NSObject class (in this example, "Posts")
+    //RKManagedObjectMapping* postMapping = [RKManagedObjectMapping objectMappingForClass:[Posts class]];
+    
+    RKManagedObjectMapping* postMapping = [RKManagedObjectMapping mappingForClass:[Posts class]];
+    
+    NSDateFormatter* dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"EEEE, MMMM dd, yyyy hh:mm a"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    
+    postMapping.dateFormatters = [NSArray arrayWithObject: dateFormatter];
+    
+    [postMapping mapKeyPath:@"id" toAttribute:@"postID"];
+    [postMapping mapKeyPath:@"date" toAttribute:@"postDate"];
+    [postMapping mapKeyPath:@"description" toAttribute:@"postDescription"];
+    [postMapping mapKeyPath:@"detail" toAttribute:@"postDetail"];
+    [postMapping mapKeyPath:@"title" toAttribute:@"postTitle"];
+    postMapping.primaryKeyAttribute = @"postID";
+    
+    [[RKObjectManager sharedManager].mappingProvider setMapping:postMapping forKeyPath:@"posts"];
+    
+    //tell RKObjectManager to load object at resource path...
+    //[self loadPosts];
+}
+
+
+- (void)loadPosts {
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/channel/latest" delegate:self];
+}
+
+// ... and grab the data via its delegate...
+- (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
+    
+    self.posts = objects;
+    
+    [self.tableView reloadData];
+    
+}
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
+    
 }
 
 - (void)viewDidUnload
@@ -65,6 +129,95 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+#pragma mark - Table view data source
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64.0;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+#warning Potentially incomplete method implementation.
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+#warning Incomplete method implementation.
+    // Return the number of rows in the section.
+    return [self.posts count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    
+    cell.textLabel.text = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postTitle"];
+    cell.detailTextLabel.text = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postDescription"];
+    // Configure the cell...
+    
+    return cell;
+}
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }   
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
 }
 
 @end
