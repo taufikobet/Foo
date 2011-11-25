@@ -15,6 +15,8 @@
 #import "Author.h"
 #import "Article.h"
 
+#import "MKInfoPanel.h"
+
 @implementation FirstViewController
 
 @synthesize posts;
@@ -99,6 +101,8 @@
     [self populatePosts];
     
     [self.tableView reloadData];
+    
+    [MKInfoPanel showPanelInView:self.view type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
