@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData/CoreData.h>
+#import "PullRefreshTableViewController.h"
 
-@interface FirstViewController : UITableViewController <RKObjectLoaderDelegate>
+@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate>
 {
 
 }
 
 @property (nonatomic, strong) NSArray *posts;
 
+-(void)loadNewPosts;
 -(void)populatePosts;
 
 @end

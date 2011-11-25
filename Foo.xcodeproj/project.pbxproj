@@ -43,6 +43,8 @@
 		5527DB57147F9FEB009883EB /* Warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 5527DB4D147F9FEB009883EB /* Warning.png */; };
 		5527DB58147F9FEB009883EB /* Warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5527DB4E147F9FEB009883EB /* Warning@2x.png */; };
 		5527DB5A147FA024009883EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5527DB59147FA024009883EB /* QuartzCore.framework */; };
+		5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5527DB64147FADF7009883EB /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5527DB63147FADF7009883EB /* arrow.png */; };
 		55A14D04147CD51E002050FC /* Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A14D03147CD51E002050FC /* Posts.m */; };
 		55F4EFF6147E3D0900314E2F /* Author.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFF5147E3D0900314E2F /* Author.m */; };
 		55F4EFF9147E3D1600314E2F /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFF8147E3D1600314E2F /* Article.m */; };
@@ -175,6 +177,9 @@
 		5527DB4D147F9FEB009883EB /* Warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Warning.png; sourceTree = "<group>"; };
 		5527DB4E147F9FEB009883EB /* Warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Warning@2x.png"; sourceTree = "<group>"; };
 		5527DB59147FA024009883EB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5527DB60147FADDB009883EB /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableViewController.h; sourceTree = "<group>"; };
+		5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableViewController.m; sourceTree = "<group>"; };
+		5527DB63147FADF7009883EB /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		55A14D02147CD51E002050FC /* Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Posts.h; sourceTree = "<group>"; };
 		55A14D03147CD51E002050FC /* Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Posts.m; sourceTree = "<group>"; };
 		55F4EFF4147E3D0900314E2F /* Author.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Author.h; sourceTree = "<group>"; };
@@ -248,6 +253,7 @@
 		5509E251147BA634009498A4 /* Foo */ = {
 			isa = PBXGroup;
 			children = (
+				5527DB5F147FADBE009883EB /* Leah's Pull to Refresh */,
 				5527DB43147F9FEB009883EB /* MKInfoBundle */,
 				5509E25A147BA634009498A4 /* AppDelegate.h */,
 				5509E25B147BA634009498A4 /* AppDelegate.m */,
@@ -318,6 +324,16 @@
 				5527DB4E147F9FEB009883EB /* Warning@2x.png */,
 			);
 			path = MKInfoBundle;
+			sourceTree = "<group>";
+		};
+		5527DB5F147FADBE009883EB /* Leah's Pull to Refresh */ = {
+			isa = PBXGroup;
+			children = (
+				5527DB63147FADF7009883EB /* arrow.png */,
+				5527DB60147FADDB009883EB /* PullRefreshTableViewController.h */,
+				5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */,
+			);
+			name = "Leah's Pull to Refresh";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -474,6 +490,7 @@
 				5527DB56147F9FEB009883EB /* Tick@2x.png in Resources */,
 				5527DB57147F9FEB009883EB /* Warning.png in Resources */,
 				5527DB58147F9FEB009883EB /* Warning@2x.png in Resources */,
+				5527DB64147FADF7009883EB /* arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +510,7 @@
 				55F4EFF9147E3D1600314E2F /* Article.m in Sources */,
 				55F4EFFC147E52FC00314E2F /* Foo.xcdatamodeld in Sources */,
 				5527DB51147F9FEB009883EB /* MKInfoPanel.m in Sources */,
+				5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

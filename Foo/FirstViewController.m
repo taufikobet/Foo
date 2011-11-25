@@ -78,6 +78,10 @@
     
     [[RKObjectManager sharedManager].mappingProvider setMapping:postMapping forKeyPath:@"posts"];
     
+    [self loadNewPosts];
+}
+
+- (void)loadNewPosts {
     [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/channel/latest" delegate:self];
 }
 
@@ -102,11 +106,24 @@
     
     [self.tableView reloadData];
     
+    [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
+    
     [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
-    NSLog(@"error...");
+
+    [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeError title:@"INTERNET" subtitle:@"Y U NO AVAILABLE" hideAfter:2.0];
+
+    [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
+
+}
+
+// Pull to refresh
+- (void)refresh {
+    // This is just a demo. Override this method with your custom reload action.
+    // Don't forget to call stopLoading at the end.
+    [self loadNewPosts];
 }
 
 - (void)viewDidUnload
