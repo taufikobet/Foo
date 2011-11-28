@@ -12,6 +12,9 @@
 
 #import "MKInfoPanel.h"
 
+#import "User.h"
+#import "Tweet.h"
+
 @implementation FirstViewController
 
 @synthesize tweets;
@@ -26,17 +29,17 @@
     return self;
 }
 
-/*
-- (void)presentTweets {
+
+- (void)populateTableViewCellWithTweets {
     
-    NSArray* sortedObjects = [Posts allObjects];
+    NSArray* sortedObjects = [Tweet allObjects];
     
-    NSSortDescriptor *dateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
+    NSSortDescriptor *dateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created_at" ascending:NO];
     NSArray *newSortDescriptor = [NSArray arrayWithObject:dateSortDescriptor];
     
-    self.posts = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
+    self.tweets = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
 }
-*/
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,6 +48,8 @@
     if (self) {
         self.title = NSLocalizedString(@"Tweet", @"Tweet");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        
+        [self populateTableViewCellWithTweets];
     }
     return self;
 }
@@ -60,51 +65,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    RKManagedObjectMapping* userMapping = [RKManagedObjectMapping mappingForClass:[User class] ];
+    [userMapping mapKeyPath:@"id_str" toAttribute:@"id_str"];
+    [userMapping mapKeyPath:@"name" toAttribute:@"name"];
+    [userMapping mapKeyPath:@"screen_name" toAttribute:@"screen_name"];
+    [userMapping setPrimaryKeyAttribute:@"id_str"];
     
-    //Mapping remote resources data (ex. JSON, XML) to plain NSObject class (in this example, "Posts")
-    //RKManagedObjectMapping* postMapping = [RKManagedObjectMapping objectMappingForClass:[Posts class]];
-    
-    /*
-    RKManagedObjectMapping* postMapping = [RKManagedObjectMapping mappingForClass:[Posts class]];
-    
+    RKManagedObjectMapping* tweetMapping = [RKManagedObjectMapping mappingForClass:[Tweet class] ];
     NSDateFormatter* dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"EEEE, MMMM dd, yyyy hh:mm a"];
+    [dateFormatter setDateFormat:@"EEE MMM dd kk:mm:ss ZZZZ yyyy"];
     dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    
-    postMapping.dateFormatters = [NSArray arrayWithObject: dateFormatter];
-    
-    [postMapping mapKeyPath:@"id" toAttribute:@"postID"];
-    [postMapping mapKeyPath:@"date" toAttribute:@"postDate"];
-    [postMapping mapKeyPath:@"description" toAttribute:@"postDescription"];
-    [postMapping mapKeyPath:@"detail" toAttribute:@"postDetail"];
-    [postMapping mapKeyPath:@"title" toAttribute:@"postTitle"];
-    postMapping.primaryKeyAttribute = @"postID";
-    
-    [[RKObjectManager sharedManager].mappingProvider setMapping:postMapping forKeyPath:@"posts"];
-    
-    [self loadNewPosts];
-    */
-
-    /*
-    // Our familiar articlesMapping from earlier
-    RKObjectMapping* tweetMapping = [RKObjectMapping mappingForClass:[Tweets class] ];
-    [tweetMapping mapKeyPath:@"title" toAttribute:@"title"];
-    [tweetMapping mapKeyPath:@"body" toAttribute:@"body"];
-    [tweetMapping mapKeyPath:@"author" toAttribute:@"author"];
-    [tweetMapping mapKeyPath:@"publication_date" toAttribute:@"publicationDate"];
+    tweetMapping.dateFormatters = [NSArray arrayWithObject: dateFormatter];
+    [tweetMapping mapKeyPath:@"created_at" toAttribute:@"created_at"];
+    [tweetMapping mapKeyPath:@"id_str" toAttribute:@"id_str"];
+    [tweetMapping mapKeyPath:@"text" toAttribute:@"text"];
+    [tweetMapping setPrimaryKeyAttribute:@"id_str"];
+    [tweetMapping mapKeyPath:@"user" toRelationship:@"user" withMapping:userMapping];
     
     [[RKObjectManager sharedManager].mappingProvider addObjectMapping:tweetMapping];
-    */
+    
+    [self loadNewTweets];
 }
 
 - (void)loadNewTweets {
     
-    /*
-    RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweets class] ];
+    RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweet class] ];
     [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/taufik_obet.json" objectMapping:tweetMapping delegate:self];
-    */
+
 }
 
 // ... and grab the data via its delegate...
@@ -112,32 +101,35 @@
 
     /*
     for (id obj in objects) {
-        NSLog(@"%@", [obj valueForKey:@"postTitle"]);
+        NSLog(@"%@", [obj valueForKey:@"text"]);
+        NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
+        NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
     }
+    */
     
-    [self populatePosts];
+    [self populateTableViewCellWithTweets];
     
     [self.tableView reloadData];
     
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
     [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
-     */
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
 
-/*
+
     [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeError title:@"INTERNET" subtitle:@"Y U NO AVAILABLE" hideAfter:2.0];
 
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
-*/
+
 }
 
 // Pull to refresh
 - (void)refresh {
     // This is just a demo. Override this method with your custom reload action.
     // Don't forget to call stopLoading at the end.
+    [self loadNewTweets];
 }
 
 - (void)viewDidUnload
@@ -200,7 +192,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-        
+    
+    cell.textLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKeyPath:@"user.screen_name"];
+    cell.detailTextLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKey:@"text"];
     return cell;
 }
 

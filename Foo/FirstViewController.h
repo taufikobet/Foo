@@ -19,5 +19,6 @@
 @property (nonatomic, strong) NSArray *tweets;
 
 - (void)loadNewTweets;
+- (void)populateTableViewCellWithTweets;
 
 @end
