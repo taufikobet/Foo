@@ -22,15 +22,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // First created instance will be assigned as sharedManager 
-    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://ios.thejakartapost.com"];
+    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://twitter.com"];
     
     RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"Foo.sqlite"];
     objectManager.objectStore = objectStore;
 
-    //RKClient* client = [RKClient clientWithBaseURL:@"http://ios.thejakartapost.com"];
-    //[client get:@"/channel/latest" delegate:self];
-
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     UIViewController *viewController1 = [[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil];

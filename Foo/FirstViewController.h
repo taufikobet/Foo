@@ -16,9 +16,8 @@
 
 }
 
-@property (nonatomic, strong) NSArray *posts;
+@property (nonatomic, strong) NSArray *tweets;
 
--(void)loadNewPosts;
--(void)populatePosts;
+- (void)loadNewTweets;
 
 @end

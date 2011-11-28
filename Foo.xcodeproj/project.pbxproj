@@ -45,9 +45,6 @@
 		5527DB5A147FA024009883EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5527DB59147FA024009883EB /* QuartzCore.framework */; };
 		5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5527DB64147FADF7009883EB /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5527DB63147FADF7009883EB /* arrow.png */; };
-		55A14D04147CD51E002050FC /* Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A14D03147CD51E002050FC /* Posts.m */; };
-		55F4EFF6147E3D0900314E2F /* Author.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFF5147E3D0900314E2F /* Author.m */; };
-		55F4EFF9147E3D1600314E2F /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFF8147E3D1600314E2F /* Article.m */; };
 		55F4EFFC147E52FC00314E2F /* Foo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -180,12 +177,6 @@
 		5527DB60147FADDB009883EB /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableViewController.h; sourceTree = "<group>"; };
 		5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableViewController.m; sourceTree = "<group>"; };
 		5527DB63147FADF7009883EB /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
-		55A14D02147CD51E002050FC /* Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Posts.h; sourceTree = "<group>"; };
-		55A14D03147CD51E002050FC /* Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Posts.m; sourceTree = "<group>"; };
-		55F4EFF4147E3D0900314E2F /* Author.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Author.h; sourceTree = "<group>"; };
-		55F4EFF5147E3D0900314E2F /* Author.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Author.m; sourceTree = "<group>"; };
-		55F4EFF7147E3D1600314E2F /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
-		55F4EFF8147E3D1600314E2F /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		55F4EFFB147E52FC00314E2F /* Foo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Foo.xcdatamodel; sourceTree = "<group>"; };
 		55F4EFFD147E545700314E2F /* Foo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Foo 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -268,12 +259,6 @@
 				5509E26B147BA634009498A4 /* FirstViewController.xib */,
 				5509E26E147BA634009498A4 /* SecondViewController.xib */,
 				5509E252147BA634009498A4 /* Supporting Files */,
-				55A14D02147CD51E002050FC /* Posts.h */,
-				55A14D03147CD51E002050FC /* Posts.m */,
-				55F4EFF4147E3D0900314E2F /* Author.h */,
-				55F4EFF5147E3D0900314E2F /* Author.m */,
-				55F4EFF7147E3D1600314E2F /* Article.h */,
-				55F4EFF8147E3D1600314E2F /* Article.m */,
 				55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */,
 			);
 			path = Foo;
@@ -505,9 +490,6 @@
 				5509E25C147BA634009498A4 /* AppDelegate.m in Sources */,
 				5509E25F147BA634009498A4 /* FirstViewController.m in Sources */,
 				5509E266147BA634009498A4 /* SecondViewController.m in Sources */,
-				55A14D04147CD51E002050FC /* Posts.m in Sources */,
-				55F4EFF6147E3D0900314E2F /* Author.m in Sources */,
-				55F4EFF9147E3D1600314E2F /* Article.m in Sources */,
 				55F4EFFC147E52FC00314E2F /* Foo.xcdatamodeld in Sources */,
 				5527DB51147F9FEB009883EB /* MKInfoPanel.m in Sources */,
 				5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */,

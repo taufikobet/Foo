@@ -10,16 +10,11 @@
 
 #import <RestKit/RestKit.h>
 
-#import "Posts.h"
-
-#import "Author.h"
-#import "Article.h"
-
 #import "MKInfoPanel.h"
 
 @implementation FirstViewController
 
-@synthesize posts;
+@synthesize tweets;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -31,15 +26,25 @@
     return self;
 }
 
+/*
+- (void)presentTweets {
+    
+    NSArray* sortedObjects = [Posts allObjects];
+    
+    NSSortDescriptor *dateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
+    NSArray *newSortDescriptor = [NSArray arrayWithObject:dateSortDescriptor];
+    
+    self.posts = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
+}
+*/
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"Latest", @"Latest");
+        self.title = NSLocalizedString(@"Tweet", @"Tweet");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
-
-        [self populatePosts];
     }
     return self;
 }
@@ -60,6 +65,7 @@
     //Mapping remote resources data (ex. JSON, XML) to plain NSObject class (in this example, "Posts")
     //RKManagedObjectMapping* postMapping = [RKManagedObjectMapping objectMappingForClass:[Posts class]];
     
+    /*
     RKManagedObjectMapping* postMapping = [RKManagedObjectMapping mappingForClass:[Posts class]];
     
     NSDateFormatter* dateFormatter = [NSDateFormatter new];
@@ -79,25 +85,32 @@
     [[RKObjectManager sharedManager].mappingProvider setMapping:postMapping forKeyPath:@"posts"];
     
     [self loadNewPosts];
+    */
+
+    /*
+    // Our familiar articlesMapping from earlier
+    RKObjectMapping* tweetMapping = [RKObjectMapping mappingForClass:[Tweets class] ];
+    [tweetMapping mapKeyPath:@"title" toAttribute:@"title"];
+    [tweetMapping mapKeyPath:@"body" toAttribute:@"body"];
+    [tweetMapping mapKeyPath:@"author" toAttribute:@"author"];
+    [tweetMapping mapKeyPath:@"publication_date" toAttribute:@"publicationDate"];
+    
+    [[RKObjectManager sharedManager].mappingProvider addObjectMapping:tweetMapping];
+    */
 }
 
-- (void)loadNewPosts {
-    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/channel/latest" delegate:self];
-}
-
-- (void)populatePosts {
+- (void)loadNewTweets {
     
-    NSArray* sortedObjects = [Posts allObjects];
-    
-    NSSortDescriptor *dateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSArray *newSortDescriptor = [NSArray arrayWithObject:dateSortDescriptor];
-    
-    self.posts = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
+    /*
+    RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweets class] ];
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/taufik_obet.json" objectMapping:tweetMapping delegate:self];
+    */
 }
 
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
 
+    /*
     for (id obj in objects) {
         NSLog(@"%@", [obj valueForKey:@"postTitle"]);
     }
@@ -109,21 +122,22 @@
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
     [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
+     */
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
 
+/*
     [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeError title:@"INTERNET" subtitle:@"Y U NO AVAILABLE" hideAfter:2.0];
 
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
-
+*/
 }
 
 // Pull to refresh
 - (void)refresh {
     // This is just a demo. Override this method with your custom reload action.
     // Don't forget to call stopLoading at the end.
-    [self loadNewPosts];
 }
 
 - (void)viewDidUnload
@@ -175,7 +189,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.posts count];
+    return [self.tweets count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -186,12 +200,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    
-    cell.textLabel.text = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postTitle"];
-    NSDate *newsDate = [[self.posts objectAtIndex:indexPath.row] valueForKey:@"postDate"];
-    cell.detailTextLabel.text = [newsDate description];
-    // Configure the cell...
-    
+        
     return cell;
 }
 
