@@ -21,6 +21,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UIImage *tabBackground = [[UIImage imageNamed:@"tab_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
+    [[UITabBar appearance] setBackgroundImage:tabBackground];
+    [[UITabBar appearance] setBackgroundColor:[UIColor clearColor]];
+    [[UITabBar appearance] setTintColor:[UIColor clearColor]];
+
     // First created instance will be assigned as sharedManager 
     RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://twitter.com"];
     
@@ -32,6 +37,10 @@
     UIViewController *viewController1 = [[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil];
     UIViewController *viewController2 = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];
+    
+    self.tabBarController.tabBar.selectedImageTintColor = [UIColor clearColor];
+    self.tabBarController.tabBar.tintColor = [UIColor clearColor];
+    
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];

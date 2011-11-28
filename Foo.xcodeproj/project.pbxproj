@@ -53,6 +53,7 @@
 		55B725821483827B006A93A7 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B7257C1483827B006A93A7 /* Icon-Small@2x.png */; };
 		55B725831483827B006A93A7 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B7257D1483827B006A93A7 /* Icon.png */; };
 		55B725841483827B006A93A7 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B7257E1483827B006A93A7 /* Icon@2x.png */; };
+		55B725D61483AB4A006A93A7 /* tab_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B725D51483AB4A006A93A7 /* tab_bg.png */; };
 		55F4EFFC147E52FC00314E2F /* Foo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -195,6 +196,7 @@
 		55B7257C1483827B006A93A7 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		55B7257D1483827B006A93A7 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		55B7257E1483827B006A93A7 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		55B725D51483AB4A006A93A7 /* tab_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_bg.png; sourceTree = "<group>"; };
 		55F4EFFB147E52FC00314E2F /* Foo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Foo.xcdatamodel; sourceTree = "<group>"; };
 		55F4EFFD147E545700314E2F /* Foo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Foo 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -285,6 +287,7 @@
 		5509E252147BA634009498A4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				55B725D01483A7D9006A93A7 /* Images */,
 				55B7257814838269006A93A7 /* Icons */,
 				5509E253147BA634009498A4 /* Foo-Info.plist */,
 				5509E254147BA634009498A4 /* InfoPlist.strings */,
@@ -363,6 +366,14 @@
 				55B7257314834CC6006A93A7 /* User.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		55B725D01483A7D9006A93A7 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				55B725D51483AB4A006A93A7 /* tab_bg.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -526,6 +537,7 @@
 				55B725821483827B006A93A7 /* Icon-Small@2x.png in Resources */,
 				55B725831483827B006A93A7 /* Icon.png in Resources */,
 				55B725841483827B006A93A7 /* Icon@2x.png in Resources */,
+				55B725D61483AB4A006A93A7 /* tab_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

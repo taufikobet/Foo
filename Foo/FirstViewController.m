@@ -113,7 +113,7 @@
     
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
-    [MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
+    //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
