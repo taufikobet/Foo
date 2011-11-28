@@ -1,22 +1,14 @@
+.DS_Store
+*.swp
+*~.nib
 
-Foo.xcodeproj/project.xcworkspace/xcuserdata/taufik.xcuserdatad/UserInterfaceState.xcuserstate
+build/
 
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+*.pbxuser
+*.perspective
+*.perspectivev3
 
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+*.mode1v3
+*.mode2v3
 
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
-
-Foo.xcodeproj/project.xcworkspace/xcuserdata/taufik.xcuserdatad/UserInterfaceState.xcuserstate
-
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
-
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
-
-Foo.xcodeproj/project.xcworkspace/xcuserdata/taufik.xcuserdatad/UserInterfaceState.xcuserstate
-
-Foo.xcodeproj/project.xcworkspace/xcuserdata/taufik.xcuserdatad/UserInterfaceState.xcuserstate
-
-Foo.xcodeproj/project.xcworkspace/xcuserdata/taufik.xcuserdatad/UserInterfaceState.xcuserstate
-
-Foo.xcodeproj/xcuserdata/taufik.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+xcuserdata
