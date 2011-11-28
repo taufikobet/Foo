@@ -262,6 +262,7 @@
 		5509E251147BA634009498A4 /* Foo */ = {
 			isa = PBXGroup;
 			children = (
+				55B725B014838BAB006A93A7 /* Model */,
 				5527DB5F147FADBE009883EB /* Leah's Pull to Refresh */,
 				5527DB43147F9FEB009883EB /* MKInfoBundle */,
 				5509E25A147BA634009498A4 /* AppDelegate.h */,
@@ -277,11 +278,6 @@
 				5509E26B147BA634009498A4 /* FirstViewController.xib */,
 				5509E26E147BA634009498A4 /* SecondViewController.xib */,
 				5509E252147BA634009498A4 /* Supporting Files */,
-				55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */,
-				55B7257514834CC7006A93A7 /* Tweet.h */,
-				55B7257614834CC7006A93A7 /* Tweet.m */,
-				55B7257214834CC6006A93A7 /* User.h */,
-				55B7257314834CC6006A93A7 /* User.m */,
 			);
 			path = Foo;
 			sourceTree = "<group>";
@@ -355,6 +351,18 @@
 				55B7257E1483827B006A93A7 /* Icon@2x.png */,
 			);
 			name = Icons;
+			sourceTree = "<group>";
+		};
+		55B725B014838BAB006A93A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */,
+				55B7257514834CC7006A93A7 /* Tweet.h */,
+				55B7257614834CC7006A93A7 /* Tweet.m */,
+				55B7257214834CC6006A93A7 /* User.h */,
+				55B7257314834CC6006A93A7 /* User.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
