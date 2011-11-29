@@ -28,10 +28,12 @@
 
 #import "VariableHeightCell.h"
 #import "DictionaryHelper.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation VariableHeightCell
 
 @synthesize info;
+@synthesize image;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) 
@@ -44,6 +46,7 @@
 
 - (void) prepareForReuse {
 	[super prepareForReuse];
+    self.image = nil;
 }
 
 //static UIFont* system14 = nil;
@@ -62,7 +65,7 @@ static UIFont* system15 = nil;
 
 - (void)dealloc {
     [info release];
-    
+    [image release];
     [super dealloc];
 }
 
@@ -86,11 +89,23 @@ static UIFont* system15 = nil;
 	[[UIColor blackColor] set];
     
 	[text drawInRect:CGRectMake(5.0 + imageInset , 5.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
+    
+    if (self.image) {
+		CGRect r = CGRectMake(5.0, 8.0, 32.0, 32.0);
+		[self.image drawInRect:r];
+	}
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
 	self.info = _info;
-    [self setNeedsDisplay];
+    NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
+	if (urlString) {
+        AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
+            self.image = requestedImage;
+            [self setNeedsDisplay];
+        }];
+        [operation start];
+    }
 }
 
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView {

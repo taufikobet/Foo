@@ -73,6 +73,7 @@
     [userMapping mapKeyPath:@"id_str" toAttribute:@"id_str"];
     [userMapping mapKeyPath:@"name" toAttribute:@"name"];
     [userMapping mapKeyPath:@"screen_name" toAttribute:@"screen_name"];
+    [userMapping mapKeyPath:@"profile_image_url" toAttribute:@"profile_image_url"];
     [userMapping setPrimaryKeyAttribute:@"id_str"];
     
     RKManagedObjectMapping* tweetMapping = [RKManagedObjectMapping mappingForClass:[Tweet class] ];
@@ -110,13 +111,14 @@
     
     //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
     
-    /*
+    
      for (id obj in objects) {
-     NSLog(@"%@", [obj valueForKey:@"text"]);
-     NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
-     NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
+         NSLog(@"%@", [obj valueForKey:@"text"]);
+         NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
+         NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
+         NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
      }
-     */
+     
 
 }
 

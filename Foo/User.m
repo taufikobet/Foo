@@ -15,6 +15,7 @@
 @dynamic id_str;
 @dynamic name;
 @dynamic screen_name;
+@dynamic profile_image_url;
 @dynamic tweets;
 
 @end

@@ -31,6 +31,7 @@
 @interface VariableHeightCell : FastCell
 
 @property (nonatomic, retain) NSDictionary* info;
+@property (nonatomic, retain) UIImage* image;
 
 - (void) updateCellInfo:(NSDictionary*)_info;
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView;
