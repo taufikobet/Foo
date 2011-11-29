@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		550807761484ADEC009E126E /* FastCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 550807731484ADEC009E126E /* FastCell.m */; };
+		550807771484ADEC009E126E /* VariableHeightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 550807751484ADEC009E126E /* VariableHeightCell.m */; };
 		5509E24C147BA634009498A4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509E24B147BA634009498A4 /* UIKit.framework */; };
 		5509E24E147BA634009498A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509E24D147BA634009498A4 /* Foundation.framework */; };
 		5509E250147BA634009498A4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509E24F147BA634009498A4 /* CoreGraphics.framework */; };
@@ -145,6 +147,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		550807721484ADEC009E126E /* FastCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastCell.h; sourceTree = "<group>"; };
+		550807731484ADEC009E126E /* FastCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastCell.m; sourceTree = "<group>"; };
+		550807741484ADEC009E126E /* VariableHeightCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariableHeightCell.h; sourceTree = "<group>"; };
+		550807751484ADEC009E126E /* VariableHeightCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariableHeightCell.m; sourceTree = "<group>"; };
 		5509E247147BA634009498A4 /* Foo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Foo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5509E24B147BA634009498A4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5509E24D147BA634009498A4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -227,6 +233,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		550807781484ADF1009E126E /* Custom Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				550807721484ADEC009E126E /* FastCell.h */,
+				550807731484ADEC009E126E /* FastCell.m */,
+				550807741484ADEC009E126E /* VariableHeightCell.h */,
+				550807751484ADEC009E126E /* VariableHeightCell.m */,
+			);
+			name = "Custom Table View Cells";
+			sourceTree = "<group>";
+		};
+		550807791484AE0E009E126E /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				550807781484ADF1009E126E /* Custom Table View Cells */,
+				5527DB5F147FADBE009883EB /* Leah's Pull to Refresh */,
+				5527DB43147F9FEB009883EB /* MKInfoBundle */,
+			);
+			name = "Helper Classes";
+			sourceTree = "<group>";
+		};
 		5509E23C147BA634009498A4 = {
 			isa = PBXGroup;
 			children = (
@@ -265,18 +292,13 @@
 			isa = PBXGroup;
 			children = (
 				55B725B014838BAB006A93A7 /* Model */,
-				5527DB5F147FADBE009883EB /* Leah's Pull to Refresh */,
-				5527DB43147F9FEB009883EB /* MKInfoBundle */,
+				550807791484AE0E009E126E /* Helper Classes */,
 				5509E25A147BA634009498A4 /* AppDelegate.h */,
 				5509E25B147BA634009498A4 /* AppDelegate.m */,
 				5509E25D147BA634009498A4 /* FirstViewController.h */,
 				5509E25E147BA634009498A4 /* FirstViewController.m */,
-				5509E260147BA634009498A4 /* first.png */,
-				5509E262147BA634009498A4 /* first@2x.png */,
 				5509E264147BA634009498A4 /* SecondViewController.h */,
 				5509E265147BA634009498A4 /* SecondViewController.m */,
-				5509E267147BA634009498A4 /* second.png */,
-				5509E269147BA634009498A4 /* second@2x.png */,
 				5509E26B147BA634009498A4 /* FirstViewController.xib */,
 				5509E26E147BA634009498A4 /* SecondViewController.xib */,
 				5509E252147BA634009498A4 /* Supporting Files */,
@@ -371,6 +393,10 @@
 		55B725D01483A7D9006A93A7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5509E260147BA634009498A4 /* first.png */,
+				5509E262147BA634009498A4 /* first@2x.png */,
+				5509E267147BA634009498A4 /* second.png */,
+				5509E269147BA634009498A4 /* second@2x.png */,
 				55B725D51483AB4A006A93A7 /* tab_bg.png */,
 			);
 			name = Images;
@@ -557,6 +583,8 @@
 				5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */,
 				55B7257414834CC6006A93A7 /* User.m in Sources */,
 				55B7257714834CC7006A93A7 /* Tweet.m in Sources */,
+				550807761484ADEC009E126E /* FastCell.m in Sources */,
+				550807771484ADEC009E126E /* VariableHeightCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
