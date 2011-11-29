@@ -15,6 +15,8 @@
 #import "User.h"
 #import "Tweet.h"
 
+#import "VariableHeightCell.h"
+
 @implementation FirstViewController
 
 @synthesize tweets;
@@ -98,14 +100,6 @@
 
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
-
-    /*
-    for (id obj in objects) {
-        NSLog(@"%@", [obj valueForKey:@"text"]);
-        NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
-        NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
-    }
-    */
     
     [self populateTableViewCellWithTweets];
     
@@ -114,6 +108,15 @@
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
     //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
+    
+    /*
+     for (id obj in objects) {
+     NSLog(@"%@", [obj valueForKey:@"text"]);
+     NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
+     NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
+     }
+     */
+
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
@@ -169,7 +172,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 48.0;
+    NSDictionary* obj = [self.tweets objectAtIndex:indexPath.row];
+    return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -188,13 +192,18 @@
 {
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    VariableHeightCell *cell = (VariableHeightCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[VariableHeightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKeyPath:@"user.screen_name"];
-    cell.detailTextLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKey:@"text"];
+    //cell.textLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKeyPath:@"user.screen_name"];
+    //cell.detailTextLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKey:@"text"];
+    
+    NSDictionary* obj = [self.tweets objectAtIndex:indexPath.row];
+    [cell updateCellInfo:obj];
+    
     return cell;
 }
 

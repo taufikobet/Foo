@@ -47,12 +47,14 @@
 }
 
 static UIFont* system14 = nil;
+static UIFont* HelveticaNeueCondensedBold = nil;
 
 + (void)initialize
 {
 	if(self == [VariableHeightCell class])
 	{
 		system14 = [[UIFont systemFontOfSize:14] retain];
+        HelveticaNeueCondensedBold = [[UIFont fontWithName:@"Helvetica Neue Condensed Bold" size:16] retain]; 
 	}
 }
 
@@ -68,13 +70,13 @@ static UIFont* system14 = nil;
 	[[UIColor whiteColor] set];
 	CGContextFillRect(context, rect);
 	
-	NSString* text = [info stringForKey:@"text"];
+	NSString* text = [info valueForKey:@"text"];
 	
 	CGFloat widthr = rect.size.width - 10;
     
 	CGSize size = [text sizeWithFont:system14 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	
-	[[UIColor grayColor] set];
+	[[UIColor blackColor] set];
 	[text drawInRect:CGRectMake(5.0, 5.0, widthr, size.height) withFont:system14 lineBreakMode:UILineBreakModeTailTruncation];
 }
 
@@ -84,7 +86,7 @@ static UIFont* system14 = nil;
 }
 
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView {
-	NSString* text = [_info stringForKey:@"text"];
+	NSString* text = [_info valueForKey:@"text"];
     
 	CGFloat widthr = tableView.frame.size.width - 10;
     
