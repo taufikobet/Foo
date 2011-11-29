@@ -50,8 +50,9 @@
     if (self) {
         self.title = NSLocalizedString(@"Tweets", @"Tweets");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
-        
+        self.tableView.showsVerticalScrollIndicator = NO;
         [self populateTableViewCellWithTweets];
+        
     }
     return self;
 }
