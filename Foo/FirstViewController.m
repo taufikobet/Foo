@@ -48,7 +48,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"Tweet", @"Tweet");
+        self.title = NSLocalizedString(@"Tweets", @"Tweets");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
         
         [self populateTableViewCellWithTweets];

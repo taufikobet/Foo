@@ -74,12 +74,17 @@ static UIFont* system15 = nil;
 	
 	NSString* text = [info valueForKey:@"text"];
 	
+    CGFloat imageInset = 40.0;
+    
 	CGFloat widthr = rect.size.width - 10;
+    
+    widthr = widthr - imageInset;
     
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	
 	[[UIColor blackColor] set];
-	[text drawInRect:CGRectMake(5.0, 5.0, widthr, size.height) withFont:system15 lineBreakMode:UILineBreakModeTailTruncation];
+    
+	[text drawInRect:CGRectMake(5.0 + imageInset , 5.0, widthr, size.height) withFont:system15 lineBreakMode:UILineBreakModeTailTruncation];
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
@@ -90,7 +95,11 @@ static UIFont* system15 = nil;
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView {
 	NSString* text = [_info valueForKey:@"text"];
     
+    CGFloat imageInset = 40.0;
+    
 	CGFloat widthr = tableView.frame.size.width - 10;
+    
+    widthr = widthr - imageInset;
     
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	return size.height + 10;
