@@ -46,15 +46,17 @@
 	[super prepareForReuse];
 }
 
-static UIFont* system14 = nil;
-static UIFont* HelveticaNeueCondensedBold = nil;
+//static UIFont* system14 = nil;
+static UIFont* system15 = nil;
+//static UIFont* HelveticaNeueCondensedBold = nil;
 
 + (void)initialize
 {
 	if(self == [VariableHeightCell class])
 	{
-		system14 = [[UIFont systemFontOfSize:14] retain];
-        HelveticaNeueCondensedBold = [[UIFont fontWithName:@"Helvetica Neue Condensed Bold" size:16] retain]; 
+		//system14 = [[UIFont systemFontOfSize:16] retain];
+        system15 = [[UIFont systemFontOfSize:15] retain];
+        //HelveticaNeueCondensedBold = [[UIFont fontWithName:@"Helvetica Neue Condensed Bold" size:16] retain]; 
 	}
 }
 
@@ -74,10 +76,10 @@ static UIFont* HelveticaNeueCondensedBold = nil;
 	
 	CGFloat widthr = rect.size.width - 10;
     
-	CGSize size = [text sizeWithFont:system14 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
+	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	
 	[[UIColor blackColor] set];
-	[text drawInRect:CGRectMake(5.0, 5.0, widthr, size.height) withFont:system14 lineBreakMode:UILineBreakModeTailTruncation];
+	[text drawInRect:CGRectMake(5.0, 5.0, widthr, size.height) withFont:system15 lineBreakMode:UILineBreakModeTailTruncation];
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
@@ -90,7 +92,7 @@ static UIFont* HelveticaNeueCondensedBold = nil;
     
 	CGFloat widthr = tableView.frame.size.width - 10;
     
-	CGSize size = [text sizeWithFont:system14 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
+	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	return size.height + 10;
 }
 
