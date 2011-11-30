@@ -59,6 +59,7 @@
 		5527DB5A147FA024009883EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5527DB59147FA024009883EB /* QuartzCore.framework */; };
 		5527DB62147FADDB009883EB /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5527DB64147FADF7009883EB /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5527DB63147FADF7009883EB /* arrow.png */; };
+		552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */; };
 		55B7257414834CC6006A93A7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B7257314834CC6006A93A7 /* User.m */; };
 		55B7257714834CC7006A93A7 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B7257614834CC7006A93A7 /* Tweet.m */; };
 		55B7257F1483827B006A93A7 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B725791483827B006A93A7 /* Icon-72.png */; };
@@ -231,6 +232,8 @@
 		5527DB60147FADDB009883EB /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableViewController.h; sourceTree = "<group>"; };
 		5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableViewController.m; sourceTree = "<group>"; };
 		5527DB63147FADF7009883EB /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		552FC9F714861C18009EF326 /* UIImage+FTAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FTAdditions.h"; sourceTree = "<group>"; };
+		552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FTAdditions.m"; sourceTree = "<group>"; };
 		55B7257214834CC6006A93A7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		55B7257314834CC6006A93A7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		55B7257514834CC7006A93A7 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
@@ -288,6 +291,7 @@
 		550807791484AE0E009E126E /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				552FC9F0148618FE009EF326 /* UIImage Categories */,
 				550807A31484E0FB009E126E /* JSONKit */,
 				5508077D1484E038009E126E /* AFNetworking */,
 				550807781484ADF1009E126E /* Custom Table View Cells */,
@@ -445,6 +449,15 @@
 				5527DB61147FADDB009883EB /* PullRefreshTableViewController.m */,
 			);
 			name = "Leah's Pull to Refresh";
+			sourceTree = "<group>";
+		};
+		552FC9F0148618FE009EF326 /* UIImage Categories */ = {
+			isa = PBXGroup;
+			children = (
+				552FC9F714861C18009EF326 /* UIImage+FTAdditions.h */,
+				552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */,
+			);
+			path = "UIImage Categories";
 			sourceTree = "<group>";
 		};
 		55B7257814838269006A93A7 /* Icons */ = {
@@ -679,6 +692,7 @@
 				5508079B1484E038009E126E /* AFXMLRequestOperation.m in Sources */,
 				5508079C1484E038009E126E /* UIImageView+AFNetworking.m in Sources */,
 				5508079F1484E05B009E126E /* AFURLCache.m in Sources */,
+				552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

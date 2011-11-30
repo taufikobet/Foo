@@ -29,6 +29,7 @@
 #import "VariableHeightCell.h"
 #import "DictionaryHelper.h"
 #import "UIImageView+AFNetworking.h"
+#import "UIImage+FTAdditions.h"
 
 @implementation VariableHeightCell
 
@@ -51,6 +52,7 @@
 
 //static UIFont* system14 = nil;
 static UIFont* system15 = nil;
+static UIFont* bold15 = nil;
 //static UIFont* HelveticaNeueCondensedBold = nil;
 
 + (void)initialize
@@ -58,7 +60,8 @@ static UIFont* system15 = nil;
 	if(self == [VariableHeightCell class])
 	{
 		//system14 = [[UIFont systemFontOfSize:16] retain];
-        system15 = [[UIFont systemFontOfSize:15] retain];
+        system15 = [[UIFont systemFontOfSize:15.0] retain];
+        bold15 = [[UIFont boldSystemFontOfSize:15.0] retain];
         //HelveticaNeueCondensedBold = [[UIFont fontWithName:@"Helvetica Neue Condensed Bold" size:16] retain]; 
 	}
 }
@@ -74,25 +77,30 @@ static UIFont* system15 = nil;
 	
 	[[UIColor whiteColor] set];
 	CGContextFillRect(context, rect);
-	
+
+    NSString* name = [info valueForKeyPath:@"user.name"];
 	NSString* text = [info valueForKey:@"text"];
+
 	
-    CGFloat imageInset = 40.0;
-    CGFloat imageHeight = 32.0;
+    CGFloat imageInset = 48.0;
+    CGFloat imageHeight = 48.0;
     
 	CGFloat widthr = rect.size.width - 10;
     
     widthr = widthr - imageInset;
     
+    CGSize name_size = [name sizeWithFont:bold15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeWordWrap];
-	
+
 	[[UIColor blackColor] set];
-    
-	[text drawInRect:CGRectMake(5.0 + imageInset , 5.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
+
+    [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
+	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
     if (self.image) {
-		CGRect r = CGRectMake(5.0, 8.0, 32.0, 32.0);
-		[self.image drawInRect:r];
+		CGRect r = CGRectMake(5.0, 5.0, imageInset, imageInset);
+        UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:5.0 resizeTo:CGSizeMake(64.0, 64.0)];
+		[roundedImage drawInRect:r];
 	}
 }
 
@@ -109,20 +117,29 @@ static UIFont* system15 = nil;
 }
 
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView {
-	NSString* text = [_info valueForKey:@"text"];
+	
+    NSString* name = [_info valueForKeyPath:@"user.name"];
+    NSString* text = [_info valueForKey:@"text"];
     
-    CGFloat imageInset = 40.0;
-    CGFloat imageHeight = 40.0;
+    CGFloat imageInset = 48.0;
+    CGFloat imageHeight = 48.0;
+    CGFloat imagePadding = 12.0;
     
 	CGFloat widthr = tableView.frame.size.width - 10;
     
     widthr = widthr - imageInset;
-    
+
+    CGSize name_size = [name sizeWithFont:bold15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeWordWrap];
     
-    if (size.height < imageHeight) size.height = imageHeight;
+    CGFloat totalHeight = size.height + name_size.height + 5.0;
     
-	return size.height + 10;
+    CGFloat imagePaddingAndHeight = imagePadding + imageHeight;
+    
+    if (totalHeight < imagePaddingAndHeight ) totalHeight = imagePaddingAndHeight;
+    
+    return totalHeight;
+    
 }
 
 @end
