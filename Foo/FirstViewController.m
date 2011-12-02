@@ -21,6 +21,8 @@
 
 @synthesize tweets;
 
+@synthesize fetchedResultsController = _fetchedResultsController;
+
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     
@@ -63,6 +65,26 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (NSFetchedResultsController *)fetchedResultsController {
+    
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest* request = [Tweet fetchRequest];
+    NSSortDescriptor* descriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_at" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:descriptor]];
+    
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].objectStore.managedObjectContext;
+    
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:@"dictionaryCache"];
+    
+    self.fetchedResultsController = aFetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    
+    return _fetchedResultsController;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -91,21 +113,28 @@
     [[RKObjectManager sharedManager].mappingProvider addObjectMapping:tweetMapping];
     
     [self loadNewTweets];
+    
+    NSError *error;
+	if (![[self fetchedResultsController] performFetch:&error]) {
+		// Update to handle the error appropriately.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
 }
 
 - (void)loadNewTweets {
     
     RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweet class] ];
-    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/satanhimcelph.json" objectMapping:tweetMapping delegate:self];
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/finan.json" objectMapping:tweetMapping delegate:self];
 
 }
 
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
     
-    [self populateTableViewCellWithTweets];
+    //[self populateTableViewCellWithTweets];
     
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
     
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
@@ -118,7 +147,13 @@
          NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
          NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
      }
-     
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+		// Update to handle the error appropriately.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
 
 }
 
@@ -173,10 +208,11 @@
 
 #pragma mark - Table view data source
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary* obj = [self.tweets objectAtIndex:indexPath.row];
-    return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
+   NSDictionary* obj = [_fetchedResultsController objectAtIndexPath:indexPath];
+   return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -188,7 +224,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.tweets count];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
+	return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,10 +241,15 @@
     //cell.textLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKeyPath:@"user.screen_name"];
     //cell.detailTextLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKey:@"text"];
     
-    NSDictionary* obj = [self.tweets objectAtIndex:indexPath.row];
-    [cell updateCellInfo:obj];
+    [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
+}
+
+- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    [cell updateCellInfo:obj];
 }
 
 /*
@@ -260,6 +302,60 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [self.tableView beginUpdates];
+}
+
+#pragma mark - Fetched results delegate
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    UITableView *tableView = self.tableView;
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            // Reloading the section inserts a new row and ensures that titles are updated appropriately.
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [self.tableView endUpdates];
 }
 
 @end

@@ -11,14 +11,20 @@
 #import <RestKit/CoreData/CoreData.h>
 #import "PullRefreshTableViewController.h"
 
-@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate>
+@class VariableHeightCell;
+
+@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate, NSFetchedResultsControllerDelegate>
 {
 
 }
 
 @property (nonatomic, strong) NSArray *tweets;
 
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
 - (void)loadNewTweets;
 - (void)populateTableViewCellWithTweets;
+
+- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

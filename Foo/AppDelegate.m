@@ -31,13 +31,13 @@
     // Override point for customization after application launch.
         
     UIViewController *viewController1 = [[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil];
-    UIViewController *viewController2 = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+    //UIViewController *viewController2 = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
 
     UINavigationController *tweetNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController1];
     
-    self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:tweetNavigationController, viewController2, nil];
-    self.window.rootViewController = self.tabBarController;
+    //self.tabBarController = [[UITabBarController alloc] init];
+    //self.tabBarController.viewControllers = [NSArray arrayWithObjects:tweetNavigationController, viewController2, nil];
+    self.window.rootViewController = tweetNavigationController;
     [self.window makeKeyAndVisible];
     return YES;
 }
