@@ -100,7 +100,7 @@
     
     RKManagedObjectMapping* tweetMapping = [RKManagedObjectMapping mappingForClass:[Tweet class] ];
     NSDateFormatter* dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"EEE MMM dd kk:mm:ss ZZZZ yyyy"];
+    [dateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
     dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     tweetMapping.dateFormatters = [NSArray arrayWithObject: dateFormatter];
@@ -142,6 +142,9 @@
     
     
      for (id obj in objects) {
+         
+         NSLog(@"===============================================================");
+         NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
          NSLog(@"%@", [obj valueForKey:@"text"]);
          
          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -151,8 +154,10 @@
          NSLog(@"%@", myDateString);
          
          
-         NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
+         
          NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
+         
+        NSLog(@"===============================================================");
      }
     
     NSError *error;
