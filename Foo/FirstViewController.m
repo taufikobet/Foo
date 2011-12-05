@@ -125,7 +125,7 @@
 - (void)loadNewTweets {
     
     RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweet class] ];
-    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/finan.json" objectMapping:tweetMapping delegate:self];
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/taufik_obet.json" objectMapping:tweetMapping delegate:self];
 
 }
 
@@ -143,7 +143,14 @@
     
      for (id obj in objects) {
          NSLog(@"%@", [obj valueForKey:@"text"]);
-         NSLog(@"%@", [[obj valueForKey:@"created_at"] description]);
+         
+         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+         [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+         NSString *myDateString = [dateFormatter stringFromDate:[obj valueForKey:@"created_at"]];
+         NSLog(@"%@", myDateString);
+         
+         
          NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
          NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
      }
@@ -154,7 +161,7 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
-
+    
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {

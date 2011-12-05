@@ -99,7 +99,7 @@ static UIFont* bold15 = nil;
     
     if (self.image) {
 		CGRect r = CGRectMake(5.0, 5.0, imageInset, imageInset);
-        UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:5.0 resizeTo:CGSizeMake(64.0, 64.0)];
+        UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:5.0 resizeTo:CGSizeMake(128.0, 128.0)];
 		[roundedImage drawInRect:r];
 	}
 }
