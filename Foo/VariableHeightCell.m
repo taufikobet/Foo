@@ -53,6 +53,8 @@
 //static UIFont* system14 = nil;
 static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
+static UIColor* selectedColor = nil;
+static UIColor* textColor = nil;
 //static UIFont* HelveticaNeueCondensedBold = nil;
 
 + (void)initialize
@@ -74,8 +76,17 @@ static UIFont* bold15 = nil;
 
 - (void) drawContentView:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
-	
-	[[UIColor whiteColor] set];
+    
+    if (self.isSelected) {
+        selectedColor = [UIColor blueColor];   
+        textColor = [UIColor whiteColor];
+    } else {
+        selectedColor = [UIColor whiteColor];
+        textColor = [UIColor blackColor];
+    }
+    
+    [selectedColor set];
+        
 	CGContextFillRect(context, rect);
 
     NSString* name = [info valueForKeyPath:@"user.name"];
@@ -92,15 +103,15 @@ static UIFont* bold15 = nil;
     CGSize name_size = [name sizeWithFont:bold15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeWordWrap];
 
-	[[UIColor blackColor] set];
+	[textColor set];
 
     [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
 	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
     if (self.image) {
 		CGRect r = CGRectMake(5.0, 5.0, imageInset, imageInset);
-        UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:5.0 resizeTo:CGSizeMake(128.0, 128.0)];
-		[roundedImage drawInRect:r];
+        //UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:7.0 resizeTo:CGSizeMake(128.0, 128.0)];
+		[self.image drawInRect:r blendMode:kCGBlendModeNormal alpha:1.0];
 	}
 }
 
@@ -109,7 +120,7 @@ static UIFont* bold15 = nil;
     NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
 	if (urlString) {
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
-            self.image = requestedImage;
+            self.image = [UIImage roundedImage:requestedImage cornerRadius:7.0 resizeTo:CGSizeMake(64.0, 64.0)];
             [self setNeedsDisplay];
         }];
         [operation start];
