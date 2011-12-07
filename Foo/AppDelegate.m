@@ -22,7 +22,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // First created instance will be assigned as sharedManager 
-    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://twitter.com"];
+    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:@"http://api.twitter.com"];
     
     RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"Foo.sqlite"];
     objectManager.objectStore = objectStore;

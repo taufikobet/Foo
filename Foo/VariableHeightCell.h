@@ -26,9 +26,9 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //  
 
-#import "FastCell.h"
+#import "ABTableViewCell.h"
 
-@interface VariableHeightCell : FastCell
+@interface VariableHeightCell : ABTableViewCell
 
 @property (nonatomic, retain) NSDictionary* info;
 @property (nonatomic, retain) UIImage* image;

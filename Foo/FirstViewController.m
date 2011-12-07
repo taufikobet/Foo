@@ -125,7 +125,7 @@
 - (void)loadNewTweets {
     
     RKObjectMapping* tweetMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[Tweet class] ];
-    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/statuses/user_timeline/taufik_obet.json" objectMapping:tweetMapping delegate:self];
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/1/statuses/public_timeline.json" objectMapping:tweetMapping delegate:self];
 
 }
 

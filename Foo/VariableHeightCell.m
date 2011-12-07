@@ -74,7 +74,7 @@ static UIColor* textColor = nil;
     [super dealloc];
 }
 
-- (void) drawContentView:(CGRect)rect {
+- (void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted {
 	CGContextRef context = UIGraphicsGetCurrentContext();
     
     if (self.isSelected) {
