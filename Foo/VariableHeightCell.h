@@ -38,4 +38,7 @@
 
 - (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r;
 
+void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor);
+static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors);
+
 @end
