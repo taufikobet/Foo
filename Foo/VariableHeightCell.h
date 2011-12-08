@@ -28,9 +28,7 @@
 
 #import "ABTableViewCell.h"
 
-@interface VariableHeightCell : ABTableViewCell {
-
-}
+@interface VariableHeightCell : ABTableViewCell
 
 @property (nonatomic, retain) NSDictionary* info;
 @property (nonatomic, retain) UIImage* image;

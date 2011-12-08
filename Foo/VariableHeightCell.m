@@ -47,14 +47,14 @@
 
 - (void) prepareForReuse {
 	[super prepareForReuse];
-    self.image = nil;
+    //self.image = nil;
 }
 
 //static UIFont* system14 = nil;
 static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
-static UIColor* selectedColor = nil;
-static UIColor* textColor = nil;
+//static UIColor* selectedColor = nil;
+//static UIColor* textColor = nil;
 static CGRect imageRect;
 //static UIFont* HelveticaNeueCondensedBold = nil;
 
@@ -77,12 +77,12 @@ static CGRect imageRect;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    [super setSelected:selected animated:YES];
     [self setNeedsDisplay];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [super setHighlighted:highlighted animated:animated];
+    [super setHighlighted:highlighted animated:YES];
     [self setNeedsDisplay];
 }
 
@@ -139,7 +139,7 @@ static CGRect imageRect;
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
             //self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
             
-            self.image = [self roundCorneredImage:requestedImage radius:3.0];
+            self.image = [self roundCorneredImage:requestedImage radius:2.0];
             [self setNeedsDisplayInRect:imageRect];
         }];
         [operation start];
