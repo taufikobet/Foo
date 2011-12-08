@@ -55,6 +55,7 @@ static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
 static UIColor* selectedColor = nil;
 static UIColor* textColor = nil;
+static CGRect imageRect;
 //static UIFont* HelveticaNeueCondensedBold = nil;
 
 + (void)initialize
@@ -64,6 +65,7 @@ static UIColor* textColor = nil;
 		//system14 = [[UIFont systemFontOfSize:16] retain];
         system15 = [[UIFont systemFontOfSize:15.0] retain];
         bold15 = [[UIFont boldSystemFontOfSize:15.0] retain];
+        imageRect = CGRectMake(5.0, 5.0, 48.0, 48.0);
         //HelveticaNeueCondensedBold = [[UIFont fontWithName:@"Helvetica Neue Condensed Bold" size:16] retain]; 
 	}
 }
@@ -74,10 +76,21 @@ static UIColor* textColor = nil;
     [super dealloc];
 }
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    [self setNeedsDisplay];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    [self setNeedsDisplay];
+}
+
 - (void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted {
 	CGContextRef context = UIGraphicsGetCurrentContext();
     
-    if (self.isSelected) {
+    /*
+    if (highlighted) {
         selectedColor = [UIColor blueColor];   
         textColor = [UIColor whiteColor];
     } else {
@@ -86,7 +99,12 @@ static UIColor* textColor = nil;
     }
     
     [selectedColor set];
-        
+    */
+    
+    if (highlighted || [self isSelected]) [[UIColor blueColor] set];
+    
+    if (!(highlighted || [self isSelected])) [[UIColor whiteColor] set];
+    
 	CGContextFillRect(context, rect);
 
     NSString* name = [info valueForKeyPath:@"user.name"];
@@ -103,15 +121,14 @@ static UIColor* textColor = nil;
     CGSize name_size = [name sizeWithFont:bold15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeWordWrap];
 
-	[textColor set];
+	if (highlighted || [self isSelected]) [[UIColor whiteColor] set];
+    if (!(highlighted || [self isSelected])) [[UIColor blackColor] set];
 
     [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
 	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
     if (self.image) {
-		CGRect r = CGRectMake(5.0, 5.0, imageInset, imageInset);
-        //UIImage *roundedImage = [UIImage roundedImage:self.image cornerRadius:7.0 resizeTo:CGSizeMake(128.0, 128.0)];
-		[self.image drawInRect:r blendMode:kCGBlendModeNormal alpha:1.0];
+		[self.image drawInRect:imageRect blendMode:kCGBlendModeNormal alpha:1.0];
 	}
 }
 
@@ -120,8 +137,8 @@ static UIColor* textColor = nil;
     NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
 	if (urlString) {
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
-            self.image = [UIImage roundedImage:requestedImage cornerRadius:7.0 resizeTo:CGSizeMake(64.0, 64.0)];
-            [self setNeedsDisplay];
+            self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+            [self setNeedsDisplayInRect:imageRect];
         }];
         [operation start];
     }
