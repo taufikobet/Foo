@@ -137,11 +137,23 @@ static CGRect imageRect;
     NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
 	if (urlString) {
         AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
-            self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+            //self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+            
+            self.image = [self roundCorneredImage:requestedImage radius:3.0];
             [self setNeedsDisplayInRect:imageRect];
         }];
         [operation start];
     }
+}
+
+- (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r {
+    UIGraphicsBeginImageContextWithOptions(orig.size, NO, 0);
+    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, orig.size} 
+                                cornerRadius:r] addClip];
+    [orig drawInRect:(CGRect){CGPointZero, orig.size}];
+    UIImage* result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
 }
 
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView {

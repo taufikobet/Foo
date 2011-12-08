@@ -38,4 +38,6 @@
 - (void) updateCellInfo:(NSDictionary*)_info;
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView;
 
+- (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r;
+
 @end
