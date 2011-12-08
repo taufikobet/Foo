@@ -54,6 +54,7 @@ static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
 static CGFloat imageInset = 48.0;
 static CGFloat imageHeight = 48.0;
+static UIImage* gradientimage = nil;
 
 
 + (void)initialize
@@ -62,6 +63,7 @@ static CGFloat imageHeight = 48.0;
 	{
         system15 = [[UIFont systemFontOfSize:15.0] retain];
         bold15 = [[UIFont boldSystemFontOfSize:15.0] retain];
+        gradientimage = [[[UIImage imageNamed:@"gradientwide.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0] retain];
 	}
 }
 
@@ -133,7 +135,13 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
         CGContextFillRect(context, rect);
     }
 	
-    if (!(highlighted || [self isSelected])) [self drawCellBackground:rect];
+    
+
+    
+    if (!(highlighted || [self isSelected])) {
+        [self drawCellBackground:rect];
+        //[gradientimage drawInRect:rect];
+    }
     
     NSString* name = [info valueForKeyPath:@"user.name"];
 	NSString* text = [info valueForKey:@"text"];

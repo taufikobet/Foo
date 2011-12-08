@@ -62,6 +62,7 @@
 		552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */; };
 		5568C469148F799600A91585 /* ABTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5568C468148F799600A91585 /* ABTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		559D3FB91490FBF700BE0BF6 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D3FB81490FBF700BE0BF6 /* gradient.png */; };
+		559D3FCF1491114F00BE0BF6 /* gradientwide.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D3FCE1491114F00BE0BF6 /* gradientwide.png */; };
 		55B7257414834CC6006A93A7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B7257314834CC6006A93A7 /* User.m */; };
 		55B7257714834CC7006A93A7 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B7257614834CC7006A93A7 /* Tweet.m */; };
 		55B7257F1483827B006A93A7 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B725791483827B006A93A7 /* Icon-72.png */; };
@@ -240,6 +241,7 @@
 		5568C467148F799600A91585 /* ABTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABTableViewCell.h; sourceTree = "<group>"; };
 		5568C468148F799600A91585 /* ABTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABTableViewCell.m; sourceTree = "<group>"; };
 		559D3FB81490FBF700BE0BF6 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
+		559D3FCE1491114F00BE0BF6 /* gradientwide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradientwide.png; sourceTree = "<group>"; };
 		55B7257214834CC6006A93A7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		55B7257314834CC6006A93A7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		55B7257514834CC7006A93A7 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				559D3FB81490FBF700BE0BF6 /* gradient.png */,
+				559D3FCE1491114F00BE0BF6 /* gradientwide.png */,
 				55B725D01483A7D9006A93A7 /* Images */,
 				55B7257814838269006A93A7 /* Icons */,
 				5509E253147BA634009498A4 /* Foo-Info.plist */,
@@ -681,6 +684,7 @@
 				55B725841483827B006A93A7 /* Icon@2x.png in Resources */,
 				55B725D61483AB4A006A93A7 /* tab_bg.png in Resources */,
 				559D3FB91490FBF700BE0BF6 /* gradient.png in Resources */,
+				559D3FCF1491114F00BE0BF6 /* gradientwide.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
