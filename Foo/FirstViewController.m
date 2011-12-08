@@ -90,7 +90,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.tableView.separatorColor = [UIColor lightGrayColor];
     RKManagedObjectMapping* userMapping = [RKManagedObjectMapping mappingForClass:[User class] ];
     [userMapping mapKeyPath:@"id_str" toAttribute:@"id_str"];
     [userMapping mapKeyPath:@"name" toAttribute:@"name"];

@@ -71,6 +71,7 @@
 		55B725841483827B006A93A7 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B7257E1483827B006A93A7 /* Icon@2x.png */; };
 		55B725D61483AB4A006A93A7 /* tab_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B725D51483AB4A006A93A7 /* tab_bg.png */; };
 		55F4EFFC147E52FC00314E2F /* Foo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55F4EFFA147E52FC00314E2F /* Foo.xcdatamodeld */; };
+		55F5DC301490B60C0000AEA4 /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F5DC2F1490B60C0000AEA4 /* UACellBackgroundView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,6 +251,8 @@
 		55B725D51483AB4A006A93A7 /* tab_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_bg.png; sourceTree = "<group>"; };
 		55F4EFFB147E52FC00314E2F /* Foo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Foo.xcdatamodel; sourceTree = "<group>"; };
 		55F4EFFD147E545700314E2F /* Foo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Foo 2.xcdatamodel"; sourceTree = "<group>"; };
+		55F5DC2E1490B60C0000AEA4 /* UACellBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UACellBackgroundView.h; sourceTree = "<group>"; };
+		55F5DC2F1490B60C0000AEA4 /* UACellBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UACellBackgroundView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +284,8 @@
 		550807781484ADF1009E126E /* Custom Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				55F5DC2E1490B60C0000AEA4 /* UACellBackgroundView.h */,
+				55F5DC2F1490B60C0000AEA4 /* UACellBackgroundView.m */,
 				5508077A1484B03D009E126E /* DictionaryHelper.h */,
 				5508077B1484B03D009E126E /* DictionaryHelper.m */,
 				550807721484ADEC009E126E /* FastCell.h */,
@@ -707,6 +712,7 @@
 				5508079F1484E05B009E126E /* AFURLCache.m in Sources */,
 				552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */,
 				5568C469148F799600A91585 /* ABTableViewCell.m in Sources */,
+				55F5DC301490B60C0000AEA4 /* UACellBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

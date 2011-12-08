@@ -31,6 +31,10 @@
 #import "UIImageView+AFNetworking.h"
 #import "UIImage+FTAdditions.h"
 
+#define TABLE_CELL_BACKGROUND    { 1, 1, 1, 1, 0.957, 0.949, 0.949, 1}			// #FFFFFF and #DDDDDD
+
+#define kDefaultMargin           10
+
 @implementation VariableHeightCell
 
 @synthesize info;
@@ -47,7 +51,7 @@
 
 - (void) prepareForReuse {
 	[super prepareForReuse];
-    //self.image = nil;
+    self.image = nil;
 }
 
 //static UIFont* system14 = nil;
@@ -87,30 +91,55 @@ static CGRect imageRect;
 }
 
 - (void) drawContentView:(CGRect)rect highlighted:(BOOL)highlighted {
-	CGContextRef context = UIGraphicsGetCurrentContext();
     
-    /*
-    if (highlighted) {
-        selectedColor = [UIColor blueColor];   
-        textColor = [UIColor whiteColor];
-    } else {
-        selectedColor = [UIColor whiteColor];
-        textColor = [UIColor blackColor];
-    }
+    CGContextRef context = UIGraphicsGetCurrentContext();
     
-    [selectedColor set];
-    */
+    int lineWidth = 0;
     
-    if (highlighted || [self isSelected]) [[UIColor blueColor] set];
+    //CGRect newRect = [self bounds];	
+    CGFloat minx = CGRectGetMinX(rect), midx = CGRectGetMidX(rect), maxx = CGRectGetMaxX(rect);
+    CGFloat miny = CGRectGetMinY(rect), midy = CGRectGetMidY(rect), maxy = CGRectGetMaxY(rect);
+    miny -= 1;
     
-    if (!(highlighted || [self isSelected])) [[UIColor whiteColor] set];
+    CGFloat locations[2] = { 0.0, 1.0 };
+    CGColorSpaceRef myColorspace = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef myGradient = nil;
+    CGFloat components[8] = TABLE_CELL_BACKGROUND;
     
-	CGContextFillRect(context, rect);
+    // set stroke color
+    CGContextSetStrokeColorWithColor(context, [[UIColor grayColor] CGColor]);
+    CGContextSetLineWidth(context, lineWidth);
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetShouldAntialias(context, YES);
+    
+	CGMutablePathRef path = CGPathCreateMutable();
+	CGPathMoveToPoint(path, NULL, minx, miny);
+	CGPathAddLineToPoint(path, NULL, maxx, miny);
+	CGPathAddLineToPoint(path, NULL, maxx, maxy);
+	CGPathAddLineToPoint(path, NULL, minx, maxy);
+	CGPathAddLineToPoint(path, NULL, minx, miny);
+	CGPathCloseSubpath(path);
+    
+	// Fill and stroke the path
+	CGContextSaveGState(context);
+	CGContextAddPath(context, path);
+	CGContextClip(context);
+    
+	myGradient = CGGradientCreateWithColorComponents(myColorspace, components, locations, 2);
+	CGContextDrawLinearGradient(context, myGradient, CGPointMake(minx,miny), CGPointMake(minx,maxy), 0);
+    
+	CGContextAddPath(context, path);
+	CGPathRelease(path);
+	CGContextStrokePath(context);
+	CGContextRestoreGState(context);	
+	
+    
+    CGColorSpaceRelease(myColorspace);
+    CGGradientRelease(myGradient);
 
     NSString* name = [info valueForKeyPath:@"user.name"];
 	NSString* text = [info valueForKey:@"text"];
 
-	
     CGFloat imageInset = 48.0;
     CGFloat imageHeight = 48.0;
     
@@ -121,8 +150,8 @@ static CGRect imageRect;
     CGSize name_size = [name sizeWithFont:bold15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeTailTruncation];
 	CGSize size = [text sizeWithFont:system15 constrainedToSize:CGSizeMake(widthr, 999999) lineBreakMode:UILineBreakModeWordWrap];
 
-	if (highlighted || [self isSelected]) [[UIColor whiteColor] set];
-    if (!(highlighted || [self isSelected])) [[UIColor blackColor] set];
+	if (highlighted || [self isSelected]) [[UIColor lightGrayColor] set];
+    if (!(highlighted || [self isSelected])) [[UIColor grayColor] set];
 
     [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
 	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
@@ -130,6 +159,8 @@ static CGRect imageRect;
     if (self.image) {
 		[self.image drawInRect:imageRect blendMode:kCGBlendModeNormal alpha:1.0];
 	}
+    
+
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
