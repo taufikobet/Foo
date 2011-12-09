@@ -54,8 +54,6 @@ static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
 static CGFloat imageInset = 48.0;
 static CGFloat imageHeight = 48.0;
-static UIImage* gradientimage = nil;
-
 
 + (void)initialize
 {
@@ -63,7 +61,6 @@ static UIImage* gradientimage = nil;
 	{
         system15 = [[UIFont systemFontOfSize:15.0] retain];
         bold15 = [[UIFont boldSystemFontOfSize:15.0] retain];
-        gradientimage = [[[UIImage imageNamed:@"gradientwide.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0] retain];
 	}
 }
 
@@ -140,7 +137,6 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
     
     if (!(highlighted || [self isSelected])) {
         [self drawCellBackground:rect];
-        //[gradientimage drawInRect:rect];
     }
     
     NSString* name = [info valueForKeyPath:@"user.name"];
@@ -169,11 +165,13 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
 	self.info = _info;
     NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
 	if (urlString) {
-        AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
-            self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
-            [self setNeedsDisplay];
-        }];
-        [operation start];
+        if (!self.image) {
+            AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
+                self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+                [self setNeedsDisplay];
+            }];
+            [operation start];
+        }
     }
 }
 
