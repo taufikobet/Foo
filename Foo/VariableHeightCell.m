@@ -54,6 +54,7 @@ static UIFont* system15 = nil;
 static UIFont* bold15 = nil;
 static CGFloat imageInset = 48.0;
 static CGFloat imageHeight = 48.0;
+static CGRect imageRect;
 
 + (void)initialize
 {
@@ -61,6 +62,7 @@ static CGFloat imageHeight = 48.0;
 	{
         system15 = [[UIFont systemFontOfSize:15.0] retain];
         bold15 = [[UIFont boldSystemFontOfSize:15.0] retain];
+        imageRect = CGRectMake(5.0, 5.0, 48.0, 48.0);
 	}
 }
 
@@ -155,7 +157,7 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
 	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
     if (self.image) {
-		[self.image drawAtPoint:CGPointMake(5.0, 5.0)];
+		[self.image drawInRect:imageRect];
 	}
     
 
@@ -167,8 +169,9 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
 	if (urlString) {
         if (!self.image) {
             AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
-                self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
-                [self setNeedsDisplay];
+                //self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+                self.image = [self roundCorneredImage:requestedImage radius:3.0];
+                [self setNeedsDisplayInRect:imageRect];
             }];
             [operation start];
         }
@@ -176,7 +179,7 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
 }
 
 - (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r {
-    UIGraphicsBeginImageContextWithOptions(orig.size, NO, 0);
+    UIGraphicsBeginImageContextWithOptions(orig.size, NO, [UIScreen mainScreen].scale);
     [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, orig.size} 
                                 cornerRadius:r] addClip];
     [orig drawInRect:(CGRect){CGPointZero, orig.size}];
