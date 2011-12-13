@@ -331,6 +331,7 @@
             
         case NSFetchedResultsChangeUpdate:
             [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.imageDownloadsInProgress removeObjectsForKeys:[NSArray arrayWithObject:newIndexPath ]];
             //[self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
