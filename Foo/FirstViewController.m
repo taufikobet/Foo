@@ -17,9 +17,13 @@
 
 #import "VariableHeightCell.h"
 
+#import "IconDownloader.h"
+
 @implementation FirstViewController
 
 @synthesize tweets;
+
+@synthesize imageDownloadsInProgress;
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 
@@ -90,6 +94,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //self.tableView.separatorColor = [UIColor lightGrayColor];
     RKManagedObjectMapping* userMapping = [RKManagedObjectMapping mappingForClass:[User class] ];
@@ -141,7 +148,7 @@
     
     //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
     
-    
+    /*
      for (id obj in objects) {
          
          NSLog(@"===============================================================");
@@ -159,7 +166,7 @@
          NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
          
         NSLog(@"===============================================================");
-     }
+     } */
     
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
@@ -251,18 +258,30 @@
         cell = [[VariableHeightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    //cell.textLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKeyPath:@"user.screen_name"];
-    //cell.detailTextLabel.text = [[self.tweets objectAtIndex:indexPath.row] valueForKey:@"text"];
+    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    [self configureCell:cell atIndexPath:indexPath];
+    [cell updateCellInfo:obj];
+    
+    Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if (!aTweet.image) {
+        
+        if (self.tableView.dragging == NO && self.tableView.decelerating == NO) {
+            [self startIconDownload:aTweet forIndexPath:indexPath];
+        }
+        
+    }
+    else
+    {
+        cell.image = aTweet.image;
+    }
     
     return cell;
 }
 
-- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath 
+{
 
-    [cell updateCellInfo:obj];
 }
 
 /*
@@ -369,6 +388,71 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+}
+
+#pragma mark -
+#pragma mark Deferred image loading (UIScrollViewDelegate)
+
+// Load images for all onscreen rows when scrolling is finished
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+	{
+        [self loadImagesForOnscreenRows];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self loadImagesForOnscreenRows];
+}
+
+#pragma mark -
+#pragma mark Table cell image support
+
+- (void)startIconDownload:(Tweet *)tweet forIndexPath:(NSIndexPath *)indexPath
+{
+    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader == nil) 
+    {
+        iconDownloader = [[IconDownloader alloc] init];
+        iconDownloader.tweet = tweet;
+        iconDownloader.indexPathInTableView = indexPath;
+        iconDownloader.delegate = self;
+        [imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
+        [iconDownloader startDownload];  
+    }
+}
+
+// this method is used in case the user scrolled into a set of cells that don't have their app icons yet
+- (void)loadImagesForOnscreenRows
+{
+    
+        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
+        {
+            Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            if (!aTweet.image) // avoid the app icon download if the app already has an icon
+            {
+                [self startIconDownload:aTweet forIndexPath:indexPath];
+            }
+        }
+    
+}
+
+// called by our ImageDownloader when an icon is ready to be displayed
+- (void)appImageDidLoad:(NSIndexPath *)indexPath
+{
+    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader != nil)
+    {
+        VariableHeightCell *cell = (VariableHeightCell *)[self.tableView cellForRowAtIndexPath:iconDownloader.indexPathInTableView];
+        
+        // Display the newly loaded image
+        cell.image = iconDownloader.tweet.image;
+        [cell setNeedsDisplay];
+    }
 }
 
 @end

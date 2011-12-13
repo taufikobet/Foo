@@ -133,9 +133,6 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
         [[UIColor blueColor] set];
         CGContextFillRect(context, rect);
     }
-	
-    
-
     
     if (!(highlighted || [self isSelected])) {
         [self drawCellBackground:rect];
@@ -156,27 +153,39 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
     [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
 	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
-    if (self.image) {
+    //if (self.image) {
 		[self.image drawInRect:imageRect];
-	}
+	//}
     
 
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
 	self.info = _info;
+    [self setNeedsDisplay];
+}
+
+/*
+- (void) loadImagesForOnscreenRows {
     NSString *urlString = [self.info valueForKeyPath:@"user.profile_image_url"];
 	if (urlString) {
         if (!self.image) {
+            
             AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] success:^(UIImage *requestedImage) {
+                
                 //self.image = [UIImage roundedImage:requestedImage cornerRadius:6.0 resizeTo:CGSizeMake(48.0, 48.0)];
+                
                 self.image = [self roundCorneredImage:requestedImage radius:3.0];
+                
                 [self setNeedsDisplayInRect:imageRect];
+                
             }];
+            
             [operation start];
         }
     }
 }
+*/
 
 - (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r {
     UIGraphicsBeginImageContextWithOptions(orig.size, NO, [UIScreen mainScreen].scale);

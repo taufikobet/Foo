@@ -2,7 +2,7 @@
 //  Tweet.h
 //  Foo
 //
-//  Created by Muhammad Taufik on 11/28/11.
+//  Created by Muhammad Taufik on 12/13/11.
 //  Copyright (c) 2011 Beetlebox. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSDate * created_at;
 @property (nonatomic, retain) NSString * id_str;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) id image;
 @property (nonatomic, retain) User *user;
 
 @end
