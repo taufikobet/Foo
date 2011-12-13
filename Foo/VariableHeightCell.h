@@ -31,14 +31,15 @@
 @interface VariableHeightCell : ABTableViewCell
 
 @property (nonatomic, retain) NSDictionary* info;
-@property (nonatomic, retain) UIImage* image;
+
+@property (nonatomic, copy) UIImage* image;
+@property (nonatomic, copy) NSString* tweet_name;
+@property (nonatomic, copy) NSString* tweet_text;
 
 - (void) updateCellInfo:(NSDictionary*)_info;
 + (CGFloat) heightForCellWithInfo:(NSDictionary*)_info inTable:(UITableView *)tableView;
 
 - (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r;
-
-- (void) loadImagesForOnscreenRows;
 
 void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor);
 static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors);

@@ -24,12 +24,13 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 - (void)loadNewTweets;
-- (void)populateTableViewCellWithTweets;
 
-- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)populateTableViewCellWithTweets;
 
 - (void)startIconDownload:(Tweet *)tweet forIndexPath:(NSIndexPath *)indexPath;
 
 - (void)loadImagesForOnscreenRows;
+
+- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

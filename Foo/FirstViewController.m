@@ -140,31 +140,21 @@
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
     
-    //[self populateTableViewCellWithTweets];
-    
-    //[self.tableView reloadData];
-    
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
     //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
     
     /*
      for (id obj in objects) {
-         
-         NSLog(@"===============================================================");
-         NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
-         NSLog(@"%@", [obj valueForKey:@"text"]);
-         
-         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-         [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-         NSString *myDateString = [dateFormatter stringFromDate:[obj valueForKey:@"created_at"]];
-         NSLog(@"%@", myDateString);
-         
-         
-         
-         NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
-         
+        NSLog(@"===============================================================");
+        NSLog(@"%@", [obj valueForKeyPath:@"user.screen_name"]);
+        NSLog(@"%@", [obj valueForKey:@"text"]);
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+        NSString *myDateString = [dateFormatter stringFromDate:[obj valueForKey:@"created_at"]];
+        NSLog(@"%@", myDateString);
+        NSLog(@"%@", [obj valueForKeyPath:@"user.profile_image_url"]);
         NSLog(@"===============================================================");
      } */
     
@@ -231,8 +221,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   NSDictionary* obj = [_fetchedResultsController objectAtIndexPath:indexPath];
-   return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
+    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -251,6 +242,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    static NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
+    
+    int nodeCount = [self.fetchedResultsController.fetchedObjects count];
+    
+    if (nodeCount == 0 && indexPath.row == 0) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceholderCellIdentifier];
+        
+        if (cell == nil) {
+            cell.detailTextLabel.textAlignment = UITextAlignmentCenter;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        cell.detailTextLabel.text = @"Loading...";
+        
+        return cell;
+    }
     
     VariableHeightCell *cell = (VariableHeightCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -258,11 +264,14 @@
         cell = [[VariableHeightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    [cell updateCellInfo:obj];
+    [self configureCell:cell atIndexPath:indexPath];
     
     Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    cell.tweet_text = aTweet.text;
+    cell.tweet_name = aTweet.user.name;
+    
+    cell.image = aTweet.image;
     
     if (!aTweet.image) {
         
@@ -279,49 +288,12 @@
     return cell;
 }
 
-- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath 
+- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-
+    [cell updateCellInfo:[self.fetchedResultsController objectAtIndexPath:indexPath]];
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }   
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }   
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
@@ -358,7 +330,8 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            //[self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -451,7 +424,6 @@
         
         // Display the newly loaded image
         cell.image = iconDownloader.tweet.image;
-        [cell setNeedsDisplay];
     }
 }
 

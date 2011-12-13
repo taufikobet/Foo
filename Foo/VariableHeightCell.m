@@ -35,6 +35,8 @@
 
 @synthesize info;
 @synthesize image;
+@synthesize tweet_name;
+@synthesize tweet_text;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) 
@@ -48,6 +50,27 @@
 - (void) prepareForReuse {
 	[super prepareForReuse];
     self.image = nil;
+}
+
+- (void) setImage:(UIImage *)newImage {
+    [image release];
+    image = [newImage retain];
+    
+    [self setNeedsDisplay];
+}
+
+- (void) setTweet_name:(NSString *)newTweetName {
+    [tweet_name release];
+    tweet_name = [newTweetName retain];
+
+    [self setNeedsDisplay];
+}
+
+- (void) setTweet_text:(NSString *)newTweetText {
+    [tweet_text release];
+    tweet_text = [newTweetText retain];
+    
+    [self setNeedsDisplay];
 }
 
 static UIFont* system15 = nil;
@@ -69,6 +92,8 @@ static CGRect imageRect;
 - (void)dealloc {
     [info release];
     [image release];
+    [tweet_name release];
+    [tweet_text release];
     [super dealloc];
 }
 
@@ -131,15 +156,18 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
     
     if (highlighted || [self isSelected]) {
         [[UIColor blueColor] set];
-        CGContextFillRect(context, rect);
+        
     }
     
     if (!(highlighted || [self isSelected])) {
-        [self drawCellBackground:rect];
+        //[self drawCellBackground:rect];
+        [[UIColor whiteColor] set];
     }
     
-    NSString* name = [info valueForKeyPath:@"user.name"];
-	NSString* text = [info valueForKey:@"text"];
+    CGContextFillRect(context, rect);
+    
+    NSString* name = self.tweet_name;
+	NSString* text = self.tweet_text;
 
     CGFloat widthr = rect.size.width - 10;
     widthr = widthr - imageInset;
@@ -151,18 +179,16 @@ static CGGradientRef GetCellBackgroundGradient(CFArrayRef colors)
     if (!(highlighted || [self isSelected])) [[UIColor blackColor] set];
 
     [name drawInRect:CGRectMake(10.0 + imageInset , 2.0, widthr, name_size.height) withFont:bold15 lineBreakMode:UILineBreakModeTailTruncation];
-	[text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
+	
+    [text drawInRect:CGRectMake(10.0 + imageInset , 20.0, widthr, size.height + imageHeight) withFont:system15 lineBreakMode:UILineBreakModeWordWrap];
     
-    //if (self.image) {
-		[self.image drawInRect:imageRect];
-	//}
+    [self.image drawInRect:imageRect];
     
 
 }
 
 - (void) updateCellInfo:(NSDictionary*)_info {
 	self.info = _info;
-    [self setNeedsDisplay];
 }
 
 /*
