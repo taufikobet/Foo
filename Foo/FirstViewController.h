@@ -31,6 +31,6 @@
 
 - (void)loadImagesForOnscreenRows;
 
-- (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)refreshing;
 
 @end

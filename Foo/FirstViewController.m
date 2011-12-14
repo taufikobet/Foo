@@ -46,6 +46,7 @@
     NSArray *newSortDescriptor = [NSArray arrayWithObject:dateSortDescriptor];
     
     self.tweets = [sortedObjects sortedArrayUsingDescriptors:newSortDescriptor];
+    
 }
 
 
@@ -56,9 +57,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Tweets", @"Tweets");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
-        self.tableView.showsVerticalScrollIndicator = NO;
-        [self populateTableViewCellWithTweets];
-        
+        //self.tableView.showsVerticalScrollIndicator = NO;
     }
     return self;
 }
@@ -69,25 +68,7 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (NSFetchedResultsController *)fetchedResultsController {
-    
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
-    }
-    
-    NSFetchRequest* request = [Tweet fetchRequest];
-    NSSortDescriptor* descriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_at" ascending:NO];
-    [request setSortDescriptors:[NSArray arrayWithObject:descriptor]];
-    
-    NSManagedObjectContext *context = [RKObjectManager sharedManager].objectStore.managedObjectContext;
-    
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:@"dictionaryCache"];
-    
-    self.fetchedResultsController = aFetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    
-    return _fetchedResultsController;
-}
+
 
 #pragma mark - View lifecycle
 
@@ -97,8 +78,9 @@
     
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //self.tableView.separatorColor = [UIColor lightGrayColor];
+    
     RKManagedObjectMapping* userMapping = [RKManagedObjectMapping mappingForClass:[User class] ];
     [userMapping mapKeyPath:@"id_str" toAttribute:@"id_str"];
     [userMapping mapKeyPath:@"name" toAttribute:@"name"];
@@ -122,12 +104,14 @@
     
     [self loadNewTweets];
     
+    /*
     NSError *error;
 	if (![[self fetchedResultsController] performFetch:&error]) {
 		// Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
+     */
 }
 
 - (void)loadNewTweets {
@@ -140,7 +124,11 @@
 // ... and grab the data via its delegate...
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
     
+    [self populateTableViewCellWithTweets];
+    
     [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
+    
+    [self.tableView reloadData];
     
     //[MKInfoPanel showPanelInWindow:[UIApplication sharedApplication].delegate.window  type:MKInfoPanelTypeInfo title:@"Loaded." subtitle:@"Latest news loaded from internetz." hideAfter:2.0];
     
@@ -158,13 +146,16 @@
         NSLog(@"===============================================================");
      } */
     
+    /*
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
-		// Update to handle the error appropriately.
+        
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
+		exit(-1);
 	}
+     */
     
+    // or...
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
@@ -177,10 +168,12 @@
 }
 
 // Pull to refresh
-- (void)refresh {
+- (void)refreshing {
     // This is just a demo. Override this method with your custom reload action.
     // Don't forget to call stopLoading at the end.
     [self loadNewTweets];
+    
+    //NSLog(@"Refresh success.");
 }
 
 - (void)viewDidUnload
@@ -221,7 +214,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    //NSDictionary* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    //return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
+    
+    NSDictionary* obj = [self.tweets objectAtIndex:indexPath.row];
     
     return [VariableHeightCell heightForCellWithInfo:obj inTable:tableView];
 }
@@ -235,38 +232,49 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
+    //id <NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
+	//return [sectionInfo numberOfObjects];
+    
+    int count = [self.tweets count];
+    
+    if (count == 0)
+    {
+        return 1;
+    }
+    
+    return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    static NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
+    static NSString *PlaceHolderCell = @"PlaceholderCell";
     
-    int nodeCount = [self.fetchedResultsController.fetchedObjects count];
+    int nodeCount = [self.tweets count];
+    
+    NSLog(@"%d", nodeCount);
     
     if (nodeCount == 0 && indexPath.row == 0) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceholderCellIdentifier];
         
-        if (cell == nil) {
-            cell.detailTextLabel.textAlignment = UITextAlignmentCenter;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceHolderCell];
+        
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:PlaceHolderCell];
         }
+        
         cell.detailTextLabel.text = @"Loading...";
         
         return cell;
     }
     
     VariableHeightCell *cell = (VariableHeightCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     if (cell == nil) {
         cell = [[VariableHeightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    //Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Tweet *aTweet = [self.tweets objectAtIndex:indexPath.row];
     
     cell.tweet_text = aTweet.text;
     cell.tweet_name = aTweet.user.name;
@@ -288,10 +296,13 @@
     return cell;
 }
 
+/*
 - (void)configureCell:(VariableHeightCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    [cell updateCellInfo:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+    //[cell updateCellInfo:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+    [cell updateCellInfo:[self.tweets objectAtIndex:indexPath.row]];
 }
+*/
 
 
 
@@ -308,61 +319,6 @@
      */
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tableView beginUpdates];
-}
-
-#pragma mark - Fetched results delegate
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    UITableView *tableView = self.tableView;
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.imageDownloadsInProgress removeObjectsForKeys:[NSArray arrayWithObject:newIndexPath ]];
-            //[self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            // Reloading the section inserts a new row and ensures that titles are updated appropriately.
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.section] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
-}
 
 #pragma mark -
 #pragma mark Deferred image loading (UIScrollViewDelegate)
@@ -370,16 +326,22 @@
 // Load images for all onscreen rows when scrolling is finished
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate)
-	{
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    
+    //if (!decelerate)
+	//{
         [self loadImagesForOnscreenRows];
-    }
+    //}
 }
 
+/*
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [super scrollViewDidEndDecelerating:scrollView];
+    
     [self loadImagesForOnscreenRows];
 }
+*/
 
 #pragma mark -
 #pragma mark Table cell image support
@@ -405,7 +367,9 @@
         NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
         for (NSIndexPath *indexPath in visiblePaths)
         {
-            Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            // Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            Tweet *aTweet = [self.tweets objectAtIndex:indexPath.row];
             
             if (!aTweet.image) // avoid the app icon download if the app already has an icon
             {
@@ -427,5 +391,86 @@
         cell.image = iconDownloader.tweet.image;
     }
 }
+
+#pragma mark - NSFetchedResultsController things
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [self.tableView beginUpdates];
+}
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest* request = [Tweet fetchRequest];
+    NSSortDescriptor* descriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_at" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:descriptor]];
+    
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].objectStore.managedObjectContext;
+    
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:@"dictionaryCache"];
+    
+    self.fetchedResultsController = aFetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    
+    return _fetchedResultsController;
+}
+
+#pragma mark - Fetched results delegate
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    UITableView *tableView = self.tableView;
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            
+            
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.imageDownloadsInProgress removeObjectsForKeys:[NSArray arrayWithObject:newIndexPath ]];
+            //[self configureCell:(VariableHeightCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            // Reloading the section inserts a new row and ensures that titles are updated appropriately.
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [self.tableView endUpdates];
+}
+
 
 @end

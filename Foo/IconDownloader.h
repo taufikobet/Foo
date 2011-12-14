@@ -74,6 +74,7 @@
 
 - (void)startDownload;
 - (void)cancelDownload;
+- (UIImage*) roundCorneredImage: (UIImage*) orig radius:(CGFloat) r;
 
 @end
 

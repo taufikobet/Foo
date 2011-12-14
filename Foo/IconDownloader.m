@@ -116,6 +116,16 @@
     self.imageConnection = nil;
 }
 
+- (UIImage*)roundCorneredImage: (UIImage*)orig radius:(CGFloat)r {
+    UIGraphicsBeginImageContextWithOptions(orig.size, NO, [UIScreen mainScreen].scale);
+    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, orig.size} 
+                                cornerRadius:r] addClip];
+    [orig drawInRect:(CGRect){CGPointZero, orig.size}];
+    UIImage* result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     // Set appIcon and clear temporary data/image
@@ -124,7 +134,12 @@
     if (image.size.width != kAppIconHeight && image.size.height != kAppIconHeight)
 	{
         CGSize itemSize = CGSizeMake(kAppIconHeight, kAppIconHeight);
-		UIGraphicsBeginImageContext(itemSize);
+		
+        UIGraphicsBeginImageContextWithOptions(itemSize, NO, [UIScreen mainScreen].scale);
+        
+        [[UIBezierPath bezierPathWithRoundedRect:(CGRect){CGPointZero, itemSize} 
+                                    cornerRadius:4.0] addClip];
+        
 		CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
 		[image drawInRect:imageRect];
 		self.tweet.image = UIGraphicsGetImageFromCurrentImageContext();
@@ -132,7 +147,7 @@
     }
     else
     {
-        self.tweet.image = image;
+        self.tweet.image = [self roundCorneredImage:image radius:4.0];
     }
     
     self.activeDownload = nil;

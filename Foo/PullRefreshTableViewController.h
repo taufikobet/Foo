@@ -54,6 +54,6 @@
 - (void)addPullToRefreshHeader;
 - (void)startLoading;
 - (void)stopLoading;
-- (void)refresh;
+- (void)refreshing;
 
 @end
