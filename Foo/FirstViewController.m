@@ -257,11 +257,19 @@
     if (nodeCount == 0 && indexPath.row == 0) {
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceHolderCell];
-        
+                
         if (cell == nil)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:PlaceHolderCell];
         }
+        
+         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        cell.imageView.image = [UIImage imageNamed:@"spinner_background.png"];
+        
+        [cell.imageView addSubview:spinner];
+        
+        [spinner startAnimating];
         
         cell.detailTextLabel.text = @"Loading...";
         
