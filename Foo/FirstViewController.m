@@ -279,14 +279,14 @@
     cell.tweet_text = aTweet.text;
     cell.tweet_name = aTweet.user.name;
     
-    cell.image = aTweet.image;
+    
     
     if (!aTweet.image) {
         
         if (self.tableView.dragging == NO && self.tableView.decelerating == NO) {
             [self startIconDownload:aTweet forIndexPath:indexPath];
         }
-        
+        cell.image = aTweet.image;
     }
     else
     {
