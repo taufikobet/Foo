@@ -375,6 +375,10 @@
             {
                 [self startIconDownload:aTweet forIndexPath:indexPath];
             }
+            else {
+                [self.imageDownloadsInProgress removeObjectsForKeys:[NSArray arrayWithObject:indexPath ]];
+            }
+            
         }
     
 }
