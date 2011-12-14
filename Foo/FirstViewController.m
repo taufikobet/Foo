@@ -252,8 +252,6 @@
     
     int nodeCount = [self.tweets count];
     
-    NSLog(@"%d", nodeCount);
-    
     if (nodeCount == 0 && indexPath.row == 0) {
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceHolderCell];
@@ -283,23 +281,21 @@
     
     //Tweet *aTweet = [self.fetchedResultsController objectAtIndexPath:indexPath];
     Tweet *aTweet = [self.tweets objectAtIndex:indexPath.row];
-    
     cell.tweet_text = aTweet.text;
     cell.tweet_name = aTweet.user.name;
-    
-    
     
     if (!aTweet.image) {
         
         if (self.tableView.dragging == NO && self.tableView.decelerating == NO) {
             [self startIconDownload:aTweet forIndexPath:indexPath];
         }
-        cell.image = aTweet.image;
+        //cell.image = aTweet.image;
     }
     else
     {
         cell.image = aTweet.image;
     }
+    
     
     return cell;
 }
@@ -354,14 +350,15 @@
 
 - (void)startIconDownload:(Tweet *)tweet forIndexPath:(NSIndexPath *)indexPath
 {
-    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:indexPath];
+
+    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:tweet.user.profile_image_url];
     if (iconDownloader == nil) 
     {
         iconDownloader = [[IconDownloader alloc] init];
         iconDownloader.tweet = tweet;
         iconDownloader.indexPathInTableView = indexPath;
         iconDownloader.delegate = self;
-        [imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
+        [imageDownloadsInProgress setObject:iconDownloader forKey:tweet.user.profile_image_url];
         [iconDownloader startDownload];  
     }
 }
@@ -369,7 +366,7 @@
 // this method is used in case the user scrolled into a set of cells that don't have their app icons yet
 - (void)loadImagesForOnscreenRows
 {
-    
+   
         NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
         for (NSIndexPath *indexPath in visiblePaths)
         {
@@ -381,9 +378,6 @@
             {
                 [self startIconDownload:aTweet forIndexPath:indexPath];
             }
-            else {
-                [self.imageDownloadsInProgress removeObjectsForKeys:[NSArray arrayWithObject:indexPath ]];
-            }
             
         }
     
@@ -392,7 +386,8 @@
 // called by our ImageDownloader when an icon is ready to be displayed
 - (void)appImageDidLoad:(NSIndexPath *)indexPath
 {
-    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:indexPath];
+    Tweet *aTweet = [self.tweets objectAtIndex:indexPath.row];
+    IconDownloader *iconDownloader = [imageDownloadsInProgress objectForKey:aTweet.user.profile_image_url];
     if (iconDownloader != nil)
     {
         VariableHeightCell *cell = (VariableHeightCell *)[self.tableView cellForRowAtIndexPath:iconDownloader.indexPathInTableView];
