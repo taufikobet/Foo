@@ -336,20 +336,18 @@
 {
     [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     
-    //if (!decelerate)
-	//{
+    if (!decelerate)
+	{
         [self loadImagesForOnscreenRows];
-    //}
+    }
 }
 
-/*
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [super scrollViewDidEndDecelerating:scrollView];
-    
     [self loadImagesForOnscreenRows];
 }
-*/
+
 
 #pragma mark -
 #pragma mark Table cell image support
