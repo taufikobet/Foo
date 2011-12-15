@@ -63,7 +63,7 @@
 		552A703D1497510700C05DF7 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 552A703C1497510700C05DF7 /* Tweet.m */; };
 		552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */; };
 		55564BEC1498D71000A24725 /* spinner_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 55564BEB1498D71000A24725 /* spinner_background.png */; };
-		5568C469148F799600A91585 /* ABTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5568C468148F799600A91585 /* ABTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5573ACEA149A0C7C0059A3BB /* ABTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5573ACE9149A0C7C0059A3BB /* ABTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		558048E21495DB5200B41AD8 /* SSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 558048E11495DB5200B41AD8 /* SSTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		559D3FB91490FBF700BE0BF6 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D3FB81490FBF700BE0BF6 /* gradient.png */; };
 		559D3FCF1491114F00BE0BF6 /* gradientwide.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D3FCE1491114F00BE0BF6 /* gradientwide.png */; };
@@ -247,8 +247,8 @@
 		552FC9F714861C18009EF326 /* UIImage+FTAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FTAdditions.h"; sourceTree = "<group>"; };
 		552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FTAdditions.m"; sourceTree = "<group>"; };
 		55564BEB1498D71000A24725 /* spinner_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spinner_background.png; sourceTree = "<group>"; };
-		5568C467148F799600A91585 /* ABTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABTableViewCell.h; sourceTree = "<group>"; };
-		5568C468148F799600A91585 /* ABTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABTableViewCell.m; sourceTree = "<group>"; };
+		5573ACE8149A0C7C0059A3BB /* ABTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABTableViewCell.h; sourceTree = "<group>"; };
+		5573ACE9149A0C7C0059A3BB /* ABTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABTableViewCell.m; sourceTree = "<group>"; };
 		558048E01495DB5200B41AD8 /* SSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTableViewCell.h; sourceTree = "<group>"; };
 		558048E11495DB5200B41AD8 /* SSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTableViewCell.m; sourceTree = "<group>"; };
 		559D3FB81490FBF700BE0BF6 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
@@ -312,9 +312,10 @@
 		550807791484AE0E009E126E /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5573ACE8149A0C7C0059A3BB /* ABTableViewCell.h */,
+				5573ACE9149A0C7C0059A3BB /* ABTableViewCell.m */,
 				552A7039149745AB00C05DF7 /* IconDownloader */,
 				558048E31495DB5500B41AD8 /* SSTableViewCell */,
-				5568C466148F799600A91585 /* ABTableViewCell */,
 				552FC9F0148618FE009EF326 /* UIImage Categories */,
 				550807A31484E0FB009E126E /* JSONKit */,
 				5508077D1484E038009E126E /* AFNetworking */,
@@ -494,15 +495,6 @@
 				552FC9F814861C18009EF326 /* UIImage+FTAdditions.m */,
 			);
 			path = "UIImage Categories";
-			sourceTree = "<group>";
-		};
-		5568C466148F799600A91585 /* ABTableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				5568C467148F799600A91585 /* ABTableViewCell.h */,
-				5568C468148F799600A91585 /* ABTableViewCell.m */,
-			);
-			path = ABTableViewCell;
 			sourceTree = "<group>";
 		};
 		558048E31495DB5500B41AD8 /* SSTableViewCell */ = {
@@ -749,11 +741,11 @@
 				5508079C1484E038009E126E /* UIImageView+AFNetworking.m in Sources */,
 				5508079F1484E05B009E126E /* AFURLCache.m in Sources */,
 				552FC9F914861C18009EF326 /* UIImage+FTAdditions.m in Sources */,
-				5568C469148F799600A91585 /* ABTableViewCell.m in Sources */,
 				55F5DC301490B60C0000AEA4 /* UACellBackgroundView.m in Sources */,
 				558048E21495DB5200B41AD8 /* SSTableViewCell.m in Sources */,
 				552A7038149745A700C05DF7 /* IconDownloader.m in Sources */,
 				552A703D1497510700C05DF7 /* Tweet.m in Sources */,
+				5573ACEA149A0C7C0059A3BB /* ABTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
