@@ -102,7 +102,7 @@
     
     [[RKObjectManager sharedManager].mappingProvider addObjectMapping:tweetMapping];
     
-    [self loadNewTweets];
+    [self refreshing];
     
     /*
     NSError *error;
@@ -171,7 +171,8 @@
 - (void)refreshing {
     // This is just a demo. Override this method with your custom reload action.
     // Don't forget to call stopLoading at the end.
-    [self loadNewTweets];
+    
+    [self performSelectorOnMainThread:@selector(loadNewTweets) withObject:nil waitUntilDone:YES];
     
     //NSLog(@"Refresh success.");
 }
@@ -341,7 +342,10 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self loadImagesForOnscreenRows];
+    if (!isLoading) {
+        [self loadImagesForOnscreenRows];
+    }
+    
 }
 
 
