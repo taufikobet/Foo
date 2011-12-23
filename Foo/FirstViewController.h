@@ -12,11 +12,13 @@
 #import "PullRefreshTableViewController.h"
 #import "IconDownloader.h"
 
+#import "TimeScroller.h"
+
 @class VariableHeightCell;
 
-@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate, IconDownloaderDelegate>
+@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate, IconDownloaderDelegate, TimeScrollerDelegate>
 {
-
+    TimeScroller *_timeScroller;
 }
 
 @property (nonatomic, strong) NSArray *tweets;

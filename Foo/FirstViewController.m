@@ -27,6 +27,19 @@
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.title = NSLocalizedString(@"Tweets", @"Tweets");
+        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        //self.tableView.showsVerticalScrollIndicator = NO;
+        
+        _timeScroller = [[TimeScroller alloc] initWithDelegate:self];
+    }
+    return self;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     
@@ -49,18 +62,6 @@
     
 }
 
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = NSLocalizedString(@"Tweets", @"Tweets");
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
-        //self.tableView.showsVerticalScrollIndicator = NO;
-    }
-    return self;
-}
 							
 - (void)didReceiveMemoryWarning
 {
@@ -329,25 +330,35 @@
 #pragma mark Deferred image loading (UIScrollViewDelegate)
 
 // Load images for all onscreen rows when scrolling is finished
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [_timeScroller scrollViewWillBeginDragging];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [_timeScroller scrollViewDidScroll];       
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     
     if (!decelerate)
 	{
+        [_timeScroller scrollViewDidEndDecelerating];
         [self loadImagesForOnscreenRows];
     }
 }
 
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [_timeScroller scrollViewDidEndDecelerating];
+    
     if (!isLoading) {
         [self loadImagesForOnscreenRows];
     }
     
 }
-
 
 #pragma mark -
 #pragma mark Table cell image support
@@ -480,6 +491,28 @@
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
 }
+
+#pragma mark TimeScrollerDelegate Methods
+
+//You should return your UITableView here
+- (UITableView *)tableViewForTimeScroller:(TimeScroller *)timeScroller {
+    
+    return self.tableView;
+    
+}
+
+//You should return an NSDate related to the UITableViewCell given. This will be
+//the date displayed when the TimeScroller is above that cell.
+- (NSDate *)dateForCell:(UITableViewCell *)cell {
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    NSDictionary *dictionary = [self.tweets objectAtIndex:indexPath.row];
+    NSDate *date = [dictionary valueForKey:@"created_at"];
+    
+    return date;
+    
+}
+
 
 
 @end
