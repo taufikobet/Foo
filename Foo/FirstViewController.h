@@ -16,7 +16,7 @@
 
 @class VariableHeightCell;
 
-@interface FirstViewController : PullRefreshTableViewController <RKObjectLoaderDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate, IconDownloaderDelegate, TimeScrollerDelegate>
+@interface FirstViewController : UITableViewController <RKObjectLoaderDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate, IconDownloaderDelegate, TimeScrollerDelegate>
 {
     TimeScroller *_timeScroller;
 }

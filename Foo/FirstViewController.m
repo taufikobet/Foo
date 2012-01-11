@@ -34,8 +34,12 @@
         self.title = NSLocalizedString(@"Tweets", @"Tweets");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
         //self.tableView.showsVerticalScrollIndicator = NO;
-        
         _timeScroller = [[TimeScroller alloc] initWithDelegate:self];
+        
+        UIBarButtonItem *newTweetBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:nil action:nil];
+        UIBarButtonItem *reloadBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
+        self.navigationItem.rightBarButtonItem = reloadBarButtonItem;
+        self.navigationItem.leftBarButtonItem = newTweetBarButtonItem;
     }
     return self;
 }
@@ -127,7 +131,7 @@
     
     [self populateTableViewCellWithTweets];
     
-    [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
+    //[self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
     
     [self.tableView reloadData];
     
@@ -183,6 +187,7 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    _timeScroller = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -341,22 +346,22 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    //[super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     
     if (!decelerate)
 	{
-        [_timeScroller scrollViewDidEndDecelerating];
+     //   [_timeScroller scrollViewDidEndDecelerating];
         [self loadImagesForOnscreenRows];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [_timeScroller scrollViewDidEndDecelerating];
+   //[_timeScroller scrollViewDidEndDecelerating];
     
-    if (!isLoading) {
+    //if (!isLoading) {
         [self loadImagesForOnscreenRows];
-    }
+    //}
     
 }
 
@@ -506,8 +511,11 @@
 - (NSDate *)dateForCell:(UITableViewCell *)cell {
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    NSDictionary *dictionary = [self.tweets objectAtIndex:indexPath.row];
-    NSDate *date = [dictionary valueForKey:@"created_at"];
+    NSLog(@"The NSLog: %d", indexPath.row);
+    Tweet *aTweet = [self.tweets objectAtIndex:indexPath.row];
+    NSLog(@"%@", aTweet.text);
+    NSLog(@"%@", aTweet.created_at);
+    NSDate *date = aTweet.created_at;
     
     return date;
     
